@@ -1,0 +1,24 @@
+@use "../base";
+
+#search-file {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0 12px;
+  gap: 12px;
+  width: 100%;
+  height: 56px;
+  background: base.$primary-color;
+
+  .search-title {
+    flex-grow: 1;
+    color: base.$text-white-color;
+    @include base.CN-header;
+  }
+
+  .search-icon {
+    flex: 0;
+    width: 24px;
+    height: 24px;
+  }
+}
