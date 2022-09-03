@@ -32,7 +32,7 @@ const createWindow = () => {
         .catch((err) => console.log('An error occurred: ', err));
 
     // conceal menu
-    // mainWindow.removeMenu();
+    // // mainWindow.removeMenu();
 }
 
 const options = {
