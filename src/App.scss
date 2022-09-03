@@ -1,0 +1,21 @@
+@use "./base";
+
+div {
+  font-family: base.$font-stack;
+}
+
+#app {
+  display: flex;
+  flex-direction: row;
+
+  .left-panel {
+    flex-grow: 1;
+    max-width: 280px;
+    height: 100vh;
+  }
+
+  .right-panel {
+    flex-grow: 6;
+    background-color: aqua;
+  }
+}
