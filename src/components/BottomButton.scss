@@ -1,0 +1,25 @@
+@use "../base.scss";
+
+.button-wrapper {
+  flex-grow: 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  gap: 8px;
+
+  height: 46px;
+  background-color: base.$primary-color;
+  color: base.$text-white-color;
+
+  cursor: pointer;
+
+  &.assist1 {
+    background-color: base.$assist-color;
+  }
+
+  &.assist2 {
+    background-color: base.$assist-color-2;
+  }
+}
