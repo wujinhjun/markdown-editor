@@ -1,12 +1,15 @@
 $primary-color: #009af2;
 $primary-color-hover: #00b0ff;
+$primary-color-80: #34aff7;
+$primary-color-60: #4ebeff;
 $second-color: #35c0ff;
 $second-color-hover: #59d6ef;
-$assist-color: #00a8c6;
+$assist-color-2: #00a8c6;
 $assist-color: #40c0cb;
 $paint-color: #ff1c25;
 $gray-deep-color: #aeaeae;
 $gray-tint-color: #d4d4d4;
+$gray-tint-color-2: #fafafa;
 $blue-deep-color: #0c2767;
 $text-black-color: #000;
 $text-white-color: #fff;
@@ -14,6 +17,18 @@ $background-color: #fff;
 
 $font-stack: "Segoe UI", "Microsoft Yahei";
 @mixin CN-header {
+  font-family: $font-stack;
+  font-size: 24px;
+  line-height: 36px;
+}
+
+@mixin CN-Article-Title {
+  font-family: $font-stack;
+  font-size: 18px;
+  line-height: 28px;
+}
+
+@mixin CN-Header {
   font-family: $font-stack;
   font-size: 24px;
   line-height: 36px;
