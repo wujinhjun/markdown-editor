@@ -1,0 +1,53 @@
+@use "../base.scss";
+
+.list-wrapper {
+  flex-grow: 1;
+
+  display: flex;
+  flex-direction: column;
+  //   background-color: base.$background-color;
+
+  box-sizing: border-box;
+  overflow: auto;
+
+  .title-wrapper {
+    flex-grow: 0;
+    flex-shrink: 0;
+
+    // config the flex layout
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    align-items: center;
+
+    height: 32px;
+    padding: 0 12px;
+    background: base.$primary-color-80;
+    transition: all 0.2s 0;
+    cursor: pointer;
+
+    &:hover {
+      background-color: base.$primary-color-60;
+      transition: all 0.2s 0;
+    }
+
+    &.active {
+      background-color: base.$primary-color;
+      transition: all 0.2s 0;
+    }
+
+    .markdown-icon {
+      width: 24px;
+      height: 24px;
+    }
+
+    .title {
+      color: base.$text-white-color;
+      @include base.CN-Article-Title;
+    }
+  }
+}
+.bottom-button-wrapper {
+  display: flex;
+  flex-direction: row;
+}
