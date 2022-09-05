@@ -21,5 +21,8 @@ div {
 
   .right-panel {
     flex-grow: 8;
+
+    display: flex;
+    flex-direction: column;
   }
 }
