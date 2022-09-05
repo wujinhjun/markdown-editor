@@ -1,0 +1,25 @@
+@use "../base.scss";
+
+.file-tables {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  padding: 0;
+  width: 100%;
+  height: 40px;
+  background: base.$second-color;
+
+  .file-table {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    width: 160px;
+    padding: 0px 12px;
+
+    @include base.CN-Article-Title;
+    color: base.$text-white-color;
+    cursor: pointer;
+  }
+}
