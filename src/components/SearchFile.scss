@@ -12,7 +12,7 @@
   height: 56px;
   background: base.$primary-color;
   box-shadow: inset 0 -1px 0 0 base.$primary-color-80;
-
+  cursor: pointer;
   .search-title {
     flex-grow: 1;
     color: base.$text-white-color;
@@ -23,5 +23,19 @@
     flex: 0;
     width: 24px;
     height: 24px;
+    transition: all 0.2s;
+
+    &:hover {
+      transform: scale(1.2);
+      transition: all 0.2s;
+    }
+  }
+
+  .search-input {
+    width: 100%;
+    height: 24px;
+    border-radius: 8px;
+    border: 1px solid #ffffff;
+    transition: all 0.2s ease-in-out;
   }
 }
