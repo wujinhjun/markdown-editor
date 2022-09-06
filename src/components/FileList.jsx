@@ -7,29 +7,30 @@ import addIcon from "../static/plus.svg";
 import importIcon from "../static/import.svg";
 
 const FileList = (props) => {
+  const { filesList, activeID } = props;
   return (
     <>
       <ul className="list-wrapper">
-        <li className="title-wrapper">
-          <img src={mdIcon} alt="markdown-icon" className="markdown-icon" />
-          <span className="title">hello</span>
-        </li>
-        <li className="title-wrapper">
-          <img src={mdIcon} alt="markdown-icon" className="markdown-icon" />
-          <span className="title">hello</span>
-        </li>
-        <li className="title-wrapper active">
-          <img src={mdIcon} alt="markdown-icon" className="markdown-icon" />
-          <span className="title">hello</span>
-        </li>
-        <li className="title-wrapper">
-          <img src={mdIcon} alt="markdown-icon" className="markdown-icon" />
-          <span className="title">hello</span>
-        </li>
-        <li className="title-wrapper">
-          <img src={mdIcon} alt="markdown-icon" className="markdown-icon" />
-          <span className="title">hello</span>
-        </li>
+        {filesList &&
+          filesList.map((item, index) => {
+            return (
+              <li
+                key={item.id}
+                className={
+                  item.id === activeID
+                    ? "title-wrapper active"
+                    : "title-wrapper"
+                }
+              >
+                <img
+                  src={mdIcon}
+                  alt="markdown-icon"
+                  className="markdown-icon"
+                />
+                <span className="title">{item.title}</span>
+              </li>
+            );
+          })}
       </ul>
       <div className="bottom-button-wrapper">
         <BottomButton
