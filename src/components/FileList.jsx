@@ -7,12 +7,12 @@ import addIcon from "../static/plus.svg";
 import importIcon from "../static/import.svg";
 
 const FileList = (props) => {
-  const { filesList, activeID } = props;
+  const { filesList, activeID, fileClick } = props;
   return (
     <>
       <ul className="list-wrapper">
         {filesList &&
-          filesList.map((item, index) => {
+          filesList.map((item) => {
             return (
               <li
                 key={item.id}
@@ -21,6 +21,9 @@ const FileList = (props) => {
                     ? "title-wrapper active"
                     : "title-wrapper"
                 }
+                onClick={() => {
+                  fileClick(item.id);
+                }}
               >
                 <img
                   src={mdIcon}
