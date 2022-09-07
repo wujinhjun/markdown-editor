@@ -16,7 +16,6 @@ import { obj } from "./utils/object";
 // import third-party libraries
 import SimpleMDE from "react-simplemde-editor";
 import "easymde/dist/easymde.min.css";
-import EasyMDE from "easymde";
 
 // mde options
 const mdeOption = {
