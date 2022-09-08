@@ -97,7 +97,9 @@ function App() {
           activeID={activeID}
           fileClose={closeFile}
         ></FileTable>
-        {openedFiles.length > 0 && <SimpleMDE options={mdeOption} />}
+        {openedFiles.length > 0 && (
+          <SimpleMDE value="hello" options={mdeOption} />
+        )}
       </div>
     </div>
   );
