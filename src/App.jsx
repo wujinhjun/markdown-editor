@@ -72,22 +72,9 @@ function App() {
     const afterCloseIDs = openedFilesID.filter((itemID) => itemID !== fileID);
     setOpenedFiles(afterClose);
     setOpenedFilesID(afterCloseIDs);
-    console.log(afterClose);
-    console.log(afterCloseIDs);
-    // setActiveID(afterCloseIDs[0]);
-    // console.log(fileID === activeID);
-    // if (fileID === activeID) {
-    //   console.log(fileID);
-    // if (fileID === activeID) {
-    //   setActiveID(afterCloseIDs[0]);
-    // }
     if (fileID === activeID) {
       if (afterCloseIDs.length > 0) {
-        //   console.log(afterCloseIDs);
-        // console.log(afterClose[0]);
-        //   setActiveID(1);
         setActiveID(afterCloseIDs[0]);
-        // setActiveID(fileID - 1);
       } else {
         setActiveID("");
       }
