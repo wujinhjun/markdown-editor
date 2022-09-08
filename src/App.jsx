@@ -93,6 +93,10 @@ function App() {
     // }
   };
 
+  const fileActive = (fileID) => {
+    setActiveID(fileID);
+  };
+
   const deleteFile = (fileID) => {
     console.log("delete");
   };
@@ -115,7 +119,7 @@ function App() {
           unSavedFileList={unSavedFiles}
           activeID={activeID}
           fileClose={closeFile}
-          fileActive={setActiveID}
+          fileActive={fileActive}
         ></FileTable>
         {openedFiles.length > 0 && (
           <SimpleMDE value="hello" options={mdeOption} />
