@@ -3,7 +3,8 @@ import "./FileTable.scss";
 
 const FileTable = (props) => {
   // props:{[{id, saved}], activeID}
-  const { openFileList, unSavedFileList, activeID, fileClose } = props;
+  const { openFileList, unSavedFileList, activeID, fileClose, fileActive } =
+    props;
   //   console.log(openFileList);
   return (
     <ul className="file-tables">
@@ -17,9 +18,20 @@ const FileTable = (props) => {
             save: unSavedFileList.includes(id),
           });
           return (
-            <li key={id} className={tableDisplay}>
+            <li
+              key={id}
+              className={tableDisplay}
+              onClick={() => fileActive(id)}
+            >
               <span className="file-title">{title}</span>
-              <div className={iconDisplay} onClick={() => fileClose(id)}></div>
+              <div
+                className={iconDisplay}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  fileClose(id);
+                }}
+              ></div>
             </li>
           );
         })}

@@ -31,13 +31,14 @@ function App() {
   //   opened files list
   //   data structure: [{id, title}, {id, title}]
   const [openedFiles, setOpenedFiles] = useState([]);
+  const [openedFilesID, setOpenedFilesID] = useState([]);
   //   unsaved files list
   //   data structure[id]
   const [unSavedFiles, setUnSavedFiles] = useState([]);
   //   searched files list
   const [searchedFiles, setSearchFiles] = useState([]);
   //   set the activeID to display
-  const [activeID, setActiveID] = useState(null);
+  const [activeID, setActiveID] = useState(0);
   //    set the editor value
   const [textValue, setTextValue] = useState("");
 
@@ -53,25 +54,43 @@ function App() {
   };
 
   const openFile = (fileID) => {
+    setActiveID(fileID);
+    if (openedFilesID.includes(fileID)) {
+      return;
+    }
     const newOpenedFiles = [
       ...openedFiles,
       { id: fileID, title: files[fileID].title },
     ];
-    setActiveID(fileID);
+    const newOpenedFilesID = [...openedFilesID, fileID];
     setOpenedFiles(newOpenedFiles);
+    setOpenedFilesID(newOpenedFilesID);
   };
 
   const closeFile = (fileID) => {
     const afterClose = openedFiles.filter((item) => item.id !== fileID);
+    const afterCloseIDs = openedFilesID.filter((itemID) => itemID !== fileID);
     setOpenedFiles(afterClose);
+    setOpenedFilesID(afterCloseIDs);
     console.log(afterClose);
+    console.log(afterCloseIDs);
+    // setActiveID(afterCloseIDs[0]);
+    // console.log(fileID === activeID);
+    // if (fileID === activeID) {
+    //   console.log(fileID);
     if (fileID === activeID) {
-      if (afterClose.length > 0) {
-        setActiveID(afterClose[0].id);
-      } else {
-        setActiveID("");
-      }
+      setActiveID(afterCloseIDs[0]);
     }
+    // if (afterCloseIDs.length > 0) {
+    //   //   console.log(afterCloseIDs);
+    //   // console.log(afterClose[0]);
+    //   //   setActiveID(1);
+    //   setActiveID(afterCloseIDs[0]);
+    //   // setActiveID(fileID - 1);
+    // } else {
+    //   setActiveID("");
+    // }
+    // }
   };
 
   const deleteFile = (fileID) => {
@@ -96,6 +115,7 @@ function App() {
           unSavedFileList={unSavedFiles}
           activeID={activeID}
           fileClose={closeFile}
+          fileActive={setActiveID}
         ></FileTable>
         {openedFiles.length > 0 && (
           <SimpleMDE value="hello" options={mdeOption} />
