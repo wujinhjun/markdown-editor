@@ -16,10 +16,12 @@ import { obj } from "./utils/object";
 // import third-party libraries
 import SimpleMDE from "react-simplemde-editor";
 import "easymde/dist/easymde.min.css";
+import { v4 as uuidv4 } from "uuid";
 
 // mde options
 const mdeOption = {
   minHeight: "495px",
+  autofocus: true,
   //   lineNumbers: true,
   spellChecker: false,
   //   toolbar: false,
@@ -94,9 +96,26 @@ function App() {
   };
 
   const renameFile = (fileID, title) => {
-    const modifiedFile = { ...files[fileID], title };
+    const modifiedFile = { ...files[fileID], title, isNew: false };
     const newFiles = { ...files, [fileID]: modifiedFile };
     setFiles(newFiles);
+  };
+
+  const createFile = () => {
+    console.log("new");
+    const newID = uuidv4();
+    const newFile = {
+      id: newID,
+      title: "",
+      body: "",
+      isNew: true,
+    };
+
+    setFiles({ ...files, [newID]: newFile });
+  };
+
+  const importFile = () => {
+    console.log("import");
   };
 
   const updateContent = (fileID, value) => {
@@ -133,6 +152,8 @@ function App() {
           fileClick={openFile}
           fileRename={renameFile}
           fileDelete={deleteFile}
+          fileCreate={createFile}
+          fileImport={importFile}
         ></FileList>
       </div>
       <div className="right-panel">

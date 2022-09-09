@@ -11,7 +11,15 @@ import addIcon from "../static/plus.svg";
 import importIcon from "../static/import.svg";
 
 const FileList = (props) => {
-  const { filesList, activeID, fileClick, fileRename, fileDelete } = props;
+  const {
+    filesList,
+    activeID,
+    fileClick,
+    fileRename,
+    fileDelete,
+    fileCreate,
+    fileImport,
+  } = props;
 
   const [editStatus, setEditStatus] = useState(false);
   const [value, setValue] = useState("");
@@ -23,11 +31,14 @@ const FileList = (props) => {
   const closeInput = (item) => {
     setEditStatus(false);
     setValue("");
+    if (item.isNew) {
+      fileDelete(item.id);
+    }
   };
 
   useEffect(() => {
     const editItem = filesList.find((item) => item.id === editStatus);
-    if (enterPress && editStatus && value.trim()) {
+    if (enterPress && editStatus && value.trim() !== "") {
       fileRename(editItem.id, value);
       setValue("");
       setEditStatus(false);
@@ -39,10 +50,18 @@ const FileList = (props) => {
   });
 
   useEffect(() => {
+    const newFile = filesList.find((item) => item.isNew);
+    if (newFile) {
+      setEditStatus(newFile.id);
+      setValue(newFile.title);
+    }
+  }, [filesList]);
+
+  useEffect(() => {
     if (editStatus) {
       node.current.focus();
     }
-  });
+  }, [editStatus]);
   return (
     <>
       <ul className="list-wrapper">
@@ -66,7 +85,7 @@ const FileList = (props) => {
                   alt="markdown-icon"
                   className="markdown-icon"
                 />
-                {editStatus !== id && (
+                {editStatus !== id && !item.isNew && (
                   <>
                     <span className="title">{title}</span>
 
@@ -96,15 +115,18 @@ const FileList = (props) => {
                     </div>
                   </>
                 )}
-                {editStatus === id && (
+                {(editStatus === id || item.isNew) && (
                   <input
                     className="edit-title"
                     type="text"
                     value={value}
+                    ref={node}
                     onChange={(e) => {
                       setValue(e.target.value);
                     }}
-                    ref={node}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                    }}
                   />
                 )}
               </li>
@@ -116,12 +138,14 @@ const FileList = (props) => {
           icon={addIcon}
           title="新建"
           color="assist1"
-        ></BottomButton>
+          operateFunc={fileCreate}
+        />
         <BottomButton
           icon={importIcon}
           title="导入"
           color="assist2"
-        ></BottomButton>
+          operateFunc={fileImport}
+        />
       </div>
     </>
   );
