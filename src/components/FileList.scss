@@ -46,8 +46,14 @@
 
       color: base.$text-white-color;
       @include base.CN-Article-Title;
+
+      user-select: none;
     }
 
+    .edit-title {
+      flex-grow: 1;
+      height: 20px;
+    }
     // test icon
     .tempCon {
       display: flex;

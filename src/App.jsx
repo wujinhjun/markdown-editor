@@ -95,9 +95,24 @@ function App() {
     }
   };
 
-  const renameFile = (fileID) => {};
+  const renameFile = (fileID, title) => {
+    const modifiedFile = { ...files[fileID], title };
+    const newFiles = { ...files, [fileID]: modifiedFile };
+    setFiles(newFiles);
+  };
+
+  const updateState = () => {
+    const newOpenedFiles = filesList.filter((item) =>
+      openedFilesID.includes(item.id)
+    );
+    setOpenedFiles(newOpenedFiles);
+  };
 
   const filesList = searchedFiles.length > 0 ? searchedFiles : filesArr;
+
+  useEffect(() => {
+    updateState();
+  }, [files]);
 
   return (
     <div id="app">
