@@ -7,22 +7,23 @@ import addIcon from "../static/plus.svg";
 import importIcon from "../static/import.svg";
 
 const FileList = (props) => {
-  const { filesList, activeID, fileClick } = props;
+  const { filesList, activeID, fileClick, fileRename, fileDelete } = props;
   return (
     <>
       <ul className="list-wrapper">
         {filesList &&
           filesList.map((item) => {
+            const { id, title } = item;
             return (
               <li
-                key={item.id}
+                key={id}
                 className={
                   item.id === activeID
                     ? "title-wrapper active"
                     : "title-wrapper"
                 }
                 onClick={() => {
-                  fileClick(item.id);
+                  fileClick(id);
                 }}
               >
                 <img
@@ -30,7 +31,19 @@ const FileList = (props) => {
                   alt="markdown-icon"
                   className="markdown-icon"
                 />
-                <span className="title">{item.title}</span>
+                <span className="title">{title}</span>
+                <div className="tempCon">
+                  <span className="temp">{"R"}</span>
+                  <span
+                    className="temp"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      fileDelete(id);
+                    }}
+                  >
+                    {"X"}
+                  </span>
+                </div>
               </li>
             );
           })}

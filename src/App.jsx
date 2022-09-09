@@ -88,8 +88,14 @@ function App() {
   };
 
   const deleteFile = (fileID) => {
-    console.log("delete");
+    const { [fileID]: value, ...afterDelete } = files;
+    setFiles(afterDelete);
+    if (openedFilesID.includes(fileID)) {
+      closeFile(fileID);
+    }
   };
+
+  const renameFile = (fileID) => {};
 
   const filesList = searchedFiles.length > 0 ? searchedFiles : filesArr;
 
@@ -101,6 +107,8 @@ function App() {
           filesList={filesList}
           activeID={activeID}
           fileClick={openFile}
+          fileRename={renameFile}
+          fileDelete={deleteFile}
         ></FileList>
       </div>
       <div className="right-panel">
@@ -112,7 +120,10 @@ function App() {
           fileActive={fileActive}
         ></FileTable>
         {openedFiles.length > 0 && (
-          <SimpleMDE value="hello" options={mdeOption} />
+          <SimpleMDE
+            value={activeFile && activeFile.body}
+            options={mdeOption}
+          />
         )}
       </div>
     </div>
