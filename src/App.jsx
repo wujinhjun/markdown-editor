@@ -79,8 +79,6 @@ function App() {
         setActiveID("");
       }
     }
-
-    // }
   };
 
   const fileActive = (fileID) => {
@@ -122,6 +120,7 @@ function App() {
 
   useEffect(() => {
     updateState();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [files]);
 
   return (
@@ -148,7 +147,6 @@ function App() {
           <SimpleMDE
             value={activeFile && activeFile.body}
             onChange={(value) => {
-              //   console.log("change");
               updateContent(activeID, value);
             }}
             options={mdeOption}

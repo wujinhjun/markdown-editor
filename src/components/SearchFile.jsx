@@ -32,7 +32,6 @@ const SearchFile = (props) => {
       searchFiles(value);
     }
 
-    // console.log("esc");
     if (escPress && isSearch) {
       closeSearch();
     }
