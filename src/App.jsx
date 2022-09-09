@@ -101,6 +101,16 @@ function App() {
     setFiles(newFiles);
   };
 
+  const updateContent = (fileID, value) => {
+    if (value !== files[fileID].body) {
+      const newFile = { ...files[fileID], body: value };
+      setFiles({ ...files, [fileID]: newFile });
+      if (!unSavedFiles.includes(fileID)) {
+        setUnSavedFiles([...unSavedFiles, fileID]);
+      }
+    }
+  };
+
   const updateState = () => {
     const newOpenedFiles = filesList.filter((item) =>
       openedFilesID.includes(item.id)
@@ -137,6 +147,10 @@ function App() {
         {openedFiles.length > 0 && (
           <SimpleMDE
             value={activeFile && activeFile.body}
+            onChange={(value) => {
+              //   console.log("change");
+              updateContent(activeID, value);
+            }}
             options={mdeOption}
           />
         )}
