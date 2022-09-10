@@ -1,8 +1,10 @@
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, ipcMain } = require('electron')
 const { initialize, enable } = require("@electron/remote/main");
 const path = require('path')
 const { default: installExtension, REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } = require('electron-devtools-installer');
 const isDev = require('electron-is-dev');
+
+const ipcTypes = require("./ipcTypes")
 
 
 const createWindow = () => {
@@ -14,6 +16,8 @@ const createWindow = () => {
         minHeight: 680,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
+            // sandbox: false,
+            nodeIntegration: true
         }
     })
 
@@ -31,10 +35,25 @@ const createWindow = () => {
 
     // conceal menu
     // // mainWindow.removeMenu();
+
+    // ipc message
+    // get path name
+    // ipcMain.on(
+    //     ipcTypes.GET_PATH_NAME,
+    //     (e, title) => {
+    //         const pathName = app.getPath(title);
+    //         console.log(pathName);
+    //         mainWindow.webContents.send(ipcTypes.RETURN_PATH_NAME, pathName);
+    //     })
+
 }
 
 const options = {
     loadExtensionOptions: { allowFileAccess: true },
+}
+
+async function getPathName(title) {
+    return await app.getPath(title);
 }
 
 app.whenReady().then(() => {
@@ -45,6 +64,10 @@ app.whenReady().then(() => {
             createWindow()
         }
     })
+
+    // ipc message
+    // get path name
+    ipcMain.handle(ipcTypes.GET_PATH_NAME, async (e, title) => getPathName(title));
 
 })
 app.on('window-all-closed', () => {

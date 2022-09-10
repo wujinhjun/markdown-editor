@@ -17,6 +17,9 @@ import { obj } from "./utils/object";
 import SimpleMDE from "react-simplemde-editor";
 import "easymde/dist/easymde.min.css";
 import { v4 as uuidv4 } from "uuid";
+import { useRef } from "react";
+
+// const app = window.require("@electron/remote").app;
 
 // mde options
 const mdeOption = {
@@ -44,8 +47,23 @@ function App() {
   //    set the editor value
   const [textValue, setTextValue] = useState("");
 
+  const savedLocation = useRef(null);
   const filesArr = tranObjToArr(files);
   const activeFile = files[activeID];
+
+  window.myApp.getPath("documents").then((res) => {
+    // console.log(res);
+    savedLocation.current = res;
+  });
+  // async function getDocPath() {
+  //   const res = await window.myApp.getPath("documents");
+  //   // console.log(res);
+  //   return res.path;
+  // }
+  //   const savedLocation1 = getDocPath();
+  //   console.log(`saved: ${savedLocation}`);
+  //   console.log(savedLocation.current);
+  //   console.log(savedLocation1);
 
   const searchFiles = (keyWord) => {
     const newTempList = filesList.filter((item) =>
@@ -102,7 +120,7 @@ function App() {
   };
 
   const createFile = () => {
-    console.log("new");
+    // console.log("new");
     const newID = uuidv4();
     const newFile = {
       id: newID,
