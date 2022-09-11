@@ -21,10 +21,6 @@ import { v4 as uuidv4 } from "uuid";
 import { useRef } from "react";
 import fileDealer from "./utils/fileDealer";
 
-// const app = window.require("@electron/remote").app;
-
-// const Store = window.require("electron-store");
-
 // mde options
 const mdeOption = {
   minHeight: "495px",
@@ -88,13 +84,6 @@ function App() {
       });
       setOpenedFiles(newOpenedFiles);
     }
-    // const newOpenedFiles = [
-    //   ...openedFiles,
-    //   { id: fileID, title: files[fileID].title },
-    // ];
-    // const newOpenedFilesID = [...openedFilesID, fileID];
-    // setOpenedFiles(newOpenedFiles);
-    // setOpenedFilesID(newOpenedFilesID);
   };
 
   const closeFile = (fileID) => {
@@ -131,8 +120,6 @@ function App() {
           window.myApp.dirPath(files[fileID].path),
           `${title}`
         );
-    // const newPath = window.myApp.joinPath(savedLocation.current, `${title}`);
-    console.log(newPath);
     const modifiedFile = {
       ...files[fileID],
       title,
@@ -153,7 +140,6 @@ function App() {
         window.myApp.saveFilesData(newFiles);
       });
     }
-    // setFiles(newFiles);
   };
 
   //   create
