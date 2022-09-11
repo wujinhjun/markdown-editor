@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require('electron')
+const { app, BrowserWindow, ipcMain, dialog } = require('electron')
 const { initialize, enable } = require("@electron/remote/main");
 const path = require('path')
 const { default: installExtension, REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } = require('electron-devtools-installer');
@@ -72,6 +72,31 @@ app.whenReady().then(() => {
     // ipc message
     // get path name
     ipcMain.handle(ipcTypes.GET_PATH_NAME, async (e, title) => getPathName(title));
+
+    ipcMain.handle(ipcTypes.OPEN_DIALOG, (e) => {
+        return dialog.showOpenDialog({
+            title: "选择导入的markdown",
+            properties: ["openFile", "multiSelections"],
+            filters: [
+                {
+                    name: "markdown files",
+                    extensions: ["md"],
+                },
+            ],
+        })
+    });
+
+    ipcMain.handle(ipcTypes.IMPORT_MESSAGE, (e, num) => {
+        return dialog.showMessageBox({
+            type: "info",
+            title: "文件导入成功",
+            message: `成功导入了${num}个文件`
+        })
+    });
+
+    ipcMain.handle(ipcTypes.IMPORT_ERROR, (e)=>{
+        return dialog.showErrorBox("导入错误", "导入错误，请查看路径或已导入文件")
+    })
 
 })
 app.on('window-all-closed', () => {

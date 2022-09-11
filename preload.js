@@ -1,7 +1,7 @@
 // import { tranObjToArr } from "./src/utils/Helpers";
 
 const { contextBridge, ipcRenderer, dialog } = require("electron");
-const { join, dirname } = require("path");
+const { join, dirname, basename, extname } = require("path");
 const fs = require("node:fs/promises");
 const Store = require("electron-store");
 
@@ -35,8 +35,13 @@ contextBridge.exposeInMainWorld("myApp", {
     joinPath: (path, title) => {
         return join(path, `${title}.md`)
     },
+
     dirPath: (path) => {
         return dirname(path);
+    },
+
+    basePath: (path) => {
+        return basename(path, extname(path));
     },
 
     getPath: (title) => (
@@ -69,18 +74,14 @@ contextBridge.exposeInMainWorld("myApp", {
         return;
     },
 
-    showDialog: () => {
-        dialog.showOpenDialog({
-            title: "选择要导入的文件",
-            properties: ["openFile", "multiSelections"],
-            filters: [
-                {
-                    name: "markdown files",
-                    extensions: ["md"]
-                }
-            ],
-        }).then((paths) => {
-            console.log(paths);
-        })
+    showImportDialog: () => (
+        ipcRenderer.invoke(ipcTypes.OPEN_DIALOG)
+
+    ),
+    showMessageBox: (num) => (
+        ipcRenderer.invoke(ipcTypes.IMPORT_MESSAGE, num)
+    ),
+    showErrorBox: () => {
+        ipcRenderer.invoke(ipcTypes.IMPORT_ERROR);
     }
 })

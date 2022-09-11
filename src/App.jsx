@@ -137,7 +137,8 @@ function App() {
       const oldPath = files[fileID].path;
       fileDealer.renameFile(oldPath, newPath).then(() => {
         setFiles(newFiles);
-        window.myApp.saveFilesData(newFiles);
+        const a = window.myApp.saveFilesData(newFiles);
+        console.log(a);
       });
     }
   };
@@ -156,8 +157,37 @@ function App() {
   };
 
   const importFile = () => {
-    console.log("import");
-    window.myApp.showDialog();
+    // console.log("import");
+    window.myApp.showImportDialog().then((res) => {
+      //   console.log(res.filePaths);
+      const filePaths = res.filePaths;
+      if (Array.isArray(filePaths)) {
+        const filteredPaths = filePaths.filter((path) => {
+          const alreadyAdded = Object.values(files).find((file) => {
+            return file.path === path;
+          });
+          return !alreadyAdded;
+        });
+
+        const importFilesArray = filteredPaths.map((path) => {
+          return {
+            id: uuidv4(),
+            title: window.myApp.basePath(path),
+            path: path,
+          };
+        });
+
+        const newFiles = { ...files, ...flattenArrToObj(importFilesArray) };
+        setFiles(newFiles);
+        window.myApp.saveFilesData(newFiles);
+
+        if (importFilesArray.length > 0) {
+          window.myApp.showMessageBox(importFilesArray.length);
+        } else {
+          window.myApp.showErrorBox();
+        }
+      }
+    });
   };
 
   //   update
