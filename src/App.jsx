@@ -52,18 +52,8 @@ function App() {
   const activeFile = files[activeID];
 
   window.myApp.getPath("documents").then((res) => {
-    // console.log(res);
     savedLocation.current = res;
   });
-  // async function getDocPath() {
-  //   const res = await window.myApp.getPath("documents");
-  //   // console.log(res);
-  //   return res.path;
-  // }
-  //   const savedLocation1 = getDocPath();
-  //   console.log(`saved: ${savedLocation}`);
-  //   console.log(savedLocation.current);
-  //   console.log(savedLocation1);
 
   const searchFiles = (keyWord) => {
     const newTempList = filesList.filter((item) =>
@@ -120,7 +110,6 @@ function App() {
   };
 
   const createFile = () => {
-    // console.log("new");
     const newID = uuidv4();
     const newFile = {
       id: newID,
@@ -163,7 +152,7 @@ function App() {
   return (
     <div id="app">
       <div className="left-panel">
-        <SearchFile searchFiles={searchFiles}></SearchFile>
+        <SearchFile searchFiles={searchFiles} />
         <FileList
           filesList={filesList}
           activeID={activeID}
@@ -172,7 +161,7 @@ function App() {
           fileDelete={deleteFile}
           fileCreate={createFile}
           fileImport={importFile}
-        ></FileList>
+        />
       </div>
       <div className="right-panel">
         <FileTable
@@ -181,7 +170,7 @@ function App() {
           activeID={activeID}
           fileClose={closeFile}
           fileActive={fileActive}
-        ></FileTable>
+        />
         {openedFiles.length > 0 && (
           <SimpleMDE
             value={activeFile && activeFile.body}

@@ -22,36 +22,3 @@ const fileDealer = {
 }
 
 export default fileDealer;
-// fileDealer.writeFile("/test/hello.md", "# hello");
-// const location = "F:/electron-exercise/markdown-editor/src/utils/test";
-// console.log(path.join(__dirname, 'preload.js'))
-// fs.writeFile(location + "/hello.md", "# hello")
-//     .then(() => {
-//         console.log("ok");
-//     })
-//     .catch((err) => {
-//         console.log(err);
-//     })
-
-// fileDealer.readFile(location + "/hello.md")
-//     .then((res) => {
-//         console.log(res);
-//     })
-//     .catch((err) => {
-//         console.log(err);
-//     })
-
-// fileDealer.renameFile(location + "/hello.md", location + "/hello2.md")
-//     .then((res) => {
-//         console.log(res);
-//     })
-//     .catch((err) => {
-//         console.log(err);
-//     })
-// fileDealer.deleteFile(location + "/hello2.md")
-//     .then((res) => {
-//         console.log(res);
-//     })
-//     .catch((err) => {
-//         console.log(err);
-//     })
