@@ -4,6 +4,9 @@ const path = require('path')
 const { default: installExtension, REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } = require('electron-devtools-installer');
 const isDev = require('electron-is-dev');
 
+const Store = require("electron-store");
+const filesStore = new Store({ name: "FilesData" });
+
 const ipcTypes = require("./ipcTypes")
 
 
@@ -57,6 +60,7 @@ async function getPathName(title) {
 }
 
 app.whenReady().then(() => {
+    Store.initRenderer()
     createWindow()
 
     app.on('activate', () => {
