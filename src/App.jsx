@@ -11,6 +11,7 @@ import "./App.scss";
 
 // import utils
 import { flattenArrToObj, tranObjToArr } from "./utils/Helpers";
+
 import { obj } from "./utils/object";
 
 // import third-party libraries
@@ -18,8 +19,11 @@ import SimpleMDE from "react-simplemde-editor";
 import "easymde/dist/easymde.min.css";
 import { v4 as uuidv4 } from "uuid";
 import { useRef } from "react";
+import fileDealer from "./utils/fileDealer";
 
 // const app = window.require("@electron/remote").app;
+
+// const Store = window.require("electron-store");
 
 // mde options
 const mdeOption = {
@@ -32,7 +36,7 @@ const mdeOption = {
 
 function App() {
   // import the files and tran it from arr to obj
-  const [files, setFiles] = useState(flattenArrToObj(obj.data));
+  const [files, setFiles] = useState(window.myApp.getFilesData() || {});
   //   opened files list
   //   data structure: [{id, title}, {id, title}]
   const [openedFiles, setOpenedFiles] = useState([]);
@@ -63,18 +67,34 @@ function App() {
     setSearchFiles(newTempList);
   };
 
+  // read
   const openFile = (fileID) => {
     setActiveID(fileID);
-    if (openedFilesID.includes(fileID)) {
-      return;
+    const currentFile = files[fileID];
+    const { id, title, path, isLoaded } = currentFile;
+    if (!isLoaded) {
+      fileDealer.readFile(path).then((value) => {
+        const newFile = { ...files[fileID], body: value, isLoaded: true };
+        setFiles({ ...files, [fileID]: newFile });
+      });
     }
-    const newOpenedFiles = [
-      ...openedFiles,
-      { id: fileID, title: files[fileID].title },
-    ];
-    const newOpenedFilesID = [...openedFilesID, fileID];
-    setOpenedFiles(newOpenedFiles);
-    setOpenedFilesID(newOpenedFilesID);
+
+    if (!openedFilesID.includes(fileID)) {
+      const newOpenedFilesID = [...openedFilesID, fileID];
+      setOpenedFilesID(newOpenedFilesID);
+      const newOpenedFiles = newOpenedFilesID.map((id) => {
+        const tempFile = files[id];
+        return { id: tempFile.id, title: tempFile.title };
+      });
+      setOpenedFiles(newOpenedFiles);
+    }
+    // const newOpenedFiles = [
+    //   ...openedFiles,
+    //   { id: fileID, title: files[fileID].title },
+    // ];
+    // const newOpenedFilesID = [...openedFilesID, fileID];
+    // setOpenedFiles(newOpenedFiles);
+    // setOpenedFilesID(newOpenedFilesID);
   };
 
   const closeFile = (fileID) => {
@@ -103,12 +123,40 @@ function App() {
     }
   };
 
-  const renameFile = (fileID, title) => {
-    const modifiedFile = { ...files[fileID], title, isNew: false };
+  //   update
+  const renameFile = (fileID, title, theNew) => {
+    const newPath = theNew
+      ? window.myApp.joinPath(savedLocation.current, `${title}`)
+      : window.myApp.joinPath(
+          window.myApp.dirPath(files[fileID].path),
+          `${title}`
+        );
+    // const newPath = window.myApp.joinPath(savedLocation.current, `${title}`);
+    console.log(newPath);
+    const modifiedFile = {
+      ...files[fileID],
+      title,
+      isNew: false,
+      path: newPath,
+    };
     const newFiles = { ...files, [fileID]: modifiedFile };
-    setFiles(newFiles);
+    // console.log(theNew);
+    if (theNew) {
+      fileDealer.writeFile(newPath, files[fileID].body).then(() => {
+        setFiles(newFiles);
+        window.myApp.saveFilesData(newFiles);
+      });
+    } else {
+      const oldPath = files[fileID].path;
+      fileDealer.renameFile(oldPath, newPath).then(() => {
+        setFiles(newFiles);
+        window.myApp.saveFilesData(newFiles);
+      });
+    }
+    // setFiles(newFiles);
   };
 
+  //   create
   const createFile = () => {
     const newID = uuidv4();
     const newFile = {
@@ -123,8 +171,10 @@ function App() {
 
   const importFile = () => {
     console.log("import");
+    window.myApp.showDialog();
   };
 
+  //   update
   const updateContent = (fileID, value) => {
     if (value !== files[fileID].body) {
       const newFile = { ...files[fileID], body: value };

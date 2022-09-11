@@ -39,7 +39,7 @@ const FileList = (props) => {
   useEffect(() => {
     const editItem = filesList.find((item) => item.id === editStatus);
     if (enterPress && editStatus && value.trim() !== "") {
-      fileRename(editItem.id, value);
+      fileRename(editItem.id, value, editItem.isNew);
       setValue("");
       setEditStatus(false);
     }
