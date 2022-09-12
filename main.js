@@ -38,17 +38,6 @@ const createWindow = () => {
 
     // conceal menu
     // // mainWindow.removeMenu();
-
-    // ipc message
-    // get path name
-    // ipcMain.on(
-    //     ipcTypes.GET_PATH_NAME,
-    //     (e, title) => {
-    //         const pathName = app.getPath(title);
-    //         console.log(pathName);
-    //         mainWindow.webContents.send(ipcTypes.RETURN_PATH_NAME, pathName);
-    //     })
-
 }
 
 const options = {
@@ -94,7 +83,7 @@ app.whenReady().then(() => {
         })
     });
 
-    ipcMain.handle(ipcTypes.IMPORT_ERROR, (e)=>{
+    ipcMain.handle(ipcTypes.IMPORT_ERROR, (e) => {
         return dialog.showErrorBox("导入错误", "导入错误，请查看路径或已导入文件")
     })
 

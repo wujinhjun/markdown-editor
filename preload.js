@@ -1,6 +1,6 @@
 // import { tranObjToArr } from "./src/utils/Helpers";
 
-const { contextBridge, ipcRenderer, dialog } = require("electron");
+const { contextBridge, ipcRenderer } = require("electron");
 const { join, dirname, basename, extname } = require("path");
 const fs = require("node:fs/promises");
 const Store = require("electron-store");
@@ -10,10 +10,7 @@ const ipcTypes = require("./ipcTypes");
 
 
 
-const tranObjToArr = (objList) => {
-    // console.log(Object.keys(objList).map((item) => (objList[item])));
-    return Object.keys(objList).map((item) => (objList[item]));
-}
+const tranObjToArr = objList => Object.keys(objList).map((item) => (objList[item]))
 
 contextBridge.exposeInMainWorld("myApp", {
     readFile: (path) => {
@@ -32,33 +29,15 @@ contextBridge.exposeInMainWorld("myApp", {
         return fs.unlink(path);
     },
 
-    joinPath: (path, title) => {
-        return join(path, `${title}.md`)
-    },
+    joinPath: (path, title) => join(path, `${title}.md`),
 
-    dirPath: (path) => {
-        return dirname(path);
-    },
+    dirPath: (path) => dirname(path),
 
-    basePath: (path) => {
-        return basename(path, extname(path));
-    },
+    basePath: (path) => basename(path, extname(path)),
 
-    getPath: (title) => (
-        ipcRenderer.invoke(ipcTypes.GET_PATH_NAME, title)
-            .then((res) => {
-                // console.log(res);
-                return res;
-            })
-            .catch((err) => {
-                // console.log(err);
-                return err;
-            })
-    ),
+    getPath: (title) => ipcRenderer.invoke(ipcTypes.GET_PATH_NAME, title),
 
-    getFilesData: () => (
-        filesStore.get("files")
-    ),
+    getFilesData: () => filesStore.get("files"),
 
     saveFilesData: (files) => {
         const filesStoreObj = tranObjToArr(files).reduce((result, file) => {
@@ -74,14 +53,10 @@ contextBridge.exposeInMainWorld("myApp", {
         return;
     },
 
-    showImportDialog: () => (
-        ipcRenderer.invoke(ipcTypes.OPEN_DIALOG)
+    showImportDialog: () => ipcRenderer.invoke(ipcTypes.OPEN_DIALOG),
 
-    ),
-    showMessageBox: (num) => (
-        ipcRenderer.invoke(ipcTypes.IMPORT_MESSAGE, num)
-    ),
-    showErrorBox: () => {
-        ipcRenderer.invoke(ipcTypes.IMPORT_ERROR);
-    }
+    showMessageBox: (num) => ipcRenderer.invoke(ipcTypes.IMPORT_MESSAGE, num),
+
+    showErrorBox: () => ipcRenderer.invoke(ipcTypes.IMPORT_ERROR),
+
 })
