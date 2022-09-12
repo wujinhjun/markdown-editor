@@ -128,8 +128,8 @@ function App() {
       const oldPath = files[fileID].path;
       fileDealer.renameFile(oldPath, newPath).then(() => {
         setFiles(newFiles);
-        const a = window.myApp.saveFilesData(newFiles);
-        console.log(a);
+        window.myApp.saveFilesData(newFiles);
+        // console.log(a);
       });
     }
   };
@@ -143,6 +143,13 @@ function App() {
         setUnSavedFiles([...unSavedFiles, fileID]);
       }
     }
+  };
+
+  const saveContent = () => {
+    const { path, body } = activeFile;
+    fileDealer.writeFile(path, body).then(() => {
+      setUnSavedFiles(unSavedFiles.filter((id) => id !== activeFile.id));
+    });
   };
 
   const updateState = () => {
