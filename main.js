@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, dialog } = require('electron')
+const { app, BrowserWindow, ipcMain, dialog, Menu } = require('electron')
 const { initialize, enable } = require("@electron/remote/main");
 const path = require('path')
 const { default: installExtension, REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } = require('electron-devtools-installer');
@@ -8,7 +8,7 @@ const Store = require("electron-store");
 const filesStore = new Store({ name: "FilesData" });
 
 const ipcTypes = require("./ipcTypes")
-
+let template = require("./templates");
 
 const createWindow = () => {
     // Create the browser window.
@@ -35,17 +35,20 @@ const createWindow = () => {
     installExtension([REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS], options)
         .then((name) => console.log(`Added Extension: ${name}`))
         .catch((err) => console.log('An error occurred: ', err));
+    // let menu = Menu.buildFromTemplate(template);
+    // Menu.setApplicationMenu(menu);
 
     // conceal menu
     // // mainWindow.removeMenu();
+
+    // 加载菜单
+
+    let menu = Menu.buildFromTemplate(template)
+    Menu.setApplicationMenu(menu)
 }
 
 const options = {
     loadExtensionOptions: { allowFileAccess: true },
-}
-
-async function getPathName(title) {
-    return await app.getPath(title);
 }
 
 app.whenReady().then(() => {
@@ -58,9 +61,11 @@ app.whenReady().then(() => {
         }
     })
 
+
+
     // ipc message
     // get path name
-    ipcMain.handle(ipcTypes.GET_PATH_NAME, async (e, title) => getPathName(title));
+    ipcMain.handle(ipcTypes.GET_PATH_NAME, async (e, title) => await app.getPath(title));
 
     ipcMain.handle(ipcTypes.OPEN_DIALOG, (e) => {
         return dialog.showOpenDialog({
