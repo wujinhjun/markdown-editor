@@ -59,4 +59,12 @@ contextBridge.exposeInMainWorld("myApp", {
 
     showErrorBox: () => ipcRenderer.invoke(ipcTypes.IMPORT_ERROR),
 
+    // saveEditFile: (callback) => ipcRenderer.on(ipcTypes.SAVE_EDIT_FILE, callback),
+    listenIPC: (key, cb) => {
+        // console.log(key);
+
+        return ipcRenderer.on(key, cb)
+    },
+    removeListenIPC: (key, cb) => ipcRenderer.removeListener(key, cb),
+
 })
