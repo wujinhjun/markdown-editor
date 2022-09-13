@@ -1,5 +1,5 @@
 // import react api
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 // import components
 import SearchFile from "./components/SearchFile";
@@ -11,12 +11,12 @@ import "./App.scss";
 
 // import utils
 import { flattenArrToObj, tranObjToArr } from "./utils/Helpers";
+import useIpcRenderer from "./hooks/useIpcRenderer";
 
 // import third-party libraries
 import SimpleMDE from "react-simplemde-editor";
 import "easymde/dist/easymde.min.css";
 import { v4 as uuidv4 } from "uuid";
-import { useRef } from "react";
 import fileDealer from "./utils/fileDealer";
 
 // mde options
@@ -40,14 +40,14 @@ function App() {
   const [unSavedFiles, setUnSavedFiles] = useState([]);
   //   searched files list
   const [searchedFiles, setSearchFiles] = useState([]);
-  //   set the activeID to display
-  const [activeID, setActiveID] = useState(0);
-  //    set the editor value
-  const [textValue, setTextValue] = useState("");
+  //   set the active file to display
+  const [activeFileID, setActiveFileID] = useState("");
 
   const savedLocation = useRef(null);
+
   const filesArr = tranObjToArr(files);
-  const activeFile = files[activeID];
+  const activeFile = files[activeFileID];
+  //   console.log(activeFile);
 
   //   by preload.js to use the app.getPath("documents")
   window.myApp.getPath("documents").then((res) => {
@@ -64,7 +64,7 @@ function App() {
   };
 
   const fileActive = (fileID) => {
-    setActiveID(fileID);
+    setActiveFileID(fileID);
   };
 
   //   create
@@ -82,7 +82,7 @@ function App() {
 
   // read file by click
   const openFile = (fileID) => {
-    setActiveID(fileID);
+    setActiveFileID(fileID);
     const currentFile = files[fileID];
     const { id, title, path, isLoaded } = currentFile;
     if (!isLoaded) {
@@ -165,11 +165,11 @@ function App() {
     const afterCloseIDs = openedFilesID.filter((itemID) => itemID !== fileID);
     setOpenedFiles(afterClose);
     setOpenedFilesID(afterCloseIDs);
-    if (fileID === activeID) {
+    if (fileID === activeFileID) {
       if (afterCloseIDs.length > 0) {
-        setActiveID(afterCloseIDs[0]);
+        setActiveFileID(afterCloseIDs[0]);
       } else {
-        setActiveID("");
+        setActiveFileID("");
       }
     }
   };
@@ -219,6 +219,42 @@ function App() {
 
   const filesList = searchedFiles.length > 0 ? searchedFiles : filesArr;
 
+  //   useIpcRenderer({
+  //     save_edit_file: saveContent,
+  //   });
+
+  window.myApp.listenIPC("save_edit_file", (_e) => {
+    // console.log(activeFile);
+    saveContent();
+  });
+
+  useEffect(() => {
+    // console.log("effect");
+    // console.log(activeFile);
+    // TODO: 问题逐步缩小到了这里，在这个回调函数里是读不到activeFile这个变量的
+    // TODO:
+    // in the preload function, the callback function can't read the variable of activeFile
+    // why?
+    const currentFile = activeFile;
+    // console.log(currentFile);
+    const saveActiveFile = () => {
+      console.log(currentFile);
+      const { path, body } = currentFile;
+      fileDealer.writeFile(path, body).then(() => {
+        setUnSavedFiles(unSavedFiles.filter((id) => id !== currentFile.id));
+      });
+    };
+    const cb = (_e) => {
+      console.log(`cb: ${currentFile}`);
+      saveActiveFile();
+    };
+
+    window.myApp.listenIPC("save_edit_file", cb);
+    return () => {
+      window.myApp.removeListenIPC("save_edit_file", cb);
+    };
+  });
+
   useEffect(() => {
     updateState();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -230,19 +266,19 @@ function App() {
         <SearchFile searchFiles={searchFiles} />
         <FileList
           filesList={filesList}
-          activeID={activeID}
+          activeID={activeFileID}
           fileClick={openFile}
           fileRename={renameFile}
           fileDelete={deleteFile}
           fileCreate={createFile}
-          fileImport={importFile}
+          fileImport={saveContent}
         />
       </div>
       <div className="right-panel">
         <FileTable
           openFileList={openedFiles}
           unSavedFileList={unSavedFiles}
-          activeID={activeID}
+          activeID={activeFileID}
           fileClose={closeFile}
           fileActive={fileActive}
         />
@@ -250,7 +286,7 @@ function App() {
           <SimpleMDE
             value={activeFile && activeFile.body}
             onChange={(value) => {
-              updateContent(activeID, value);
+              updateContent(activeFileID, value);
             }}
             options={mdeOption}
           />
