@@ -41,12 +41,13 @@ function App() {
   //   searched files list
   const [searchedFiles, setSearchFiles] = useState([]);
   //   set the active file to display
-  const [activeFileID, setActiveFileID] = useState("");
+  const [activeFileID, setActiveFileID] = useState(0);
 
   const savedLocation = useRef(null);
 
   const filesArr = tranObjToArr(files);
-  const activeFile = files[activeFileID];
+  const activeFile = useRef(null);
+  activeFile.current = files[activeFileID];
   //   console.log(activeFile);
 
   //   by preload.js to use the app.getPath("documents")
@@ -146,9 +147,12 @@ function App() {
   };
 
   const saveContent = () => {
-    const { path, body } = activeFile;
+    // console.log(activeFile.current);
+    const { path, body } = activeFile.current;
     fileDealer.writeFile(path, body).then(() => {
-      setUnSavedFiles(unSavedFiles.filter((id) => id !== activeFile.id));
+      setUnSavedFiles(
+        unSavedFiles.filter((id) => id !== activeFile.current.id)
+      );
     });
   };
 
@@ -223,35 +227,17 @@ function App() {
   //     save_edit_file: saveContent,
   //   });
 
-  window.myApp.listenIPC("save_edit_file", (_e) => {
-    // console.log(activeFile);
-    saveContent();
-  });
-
   useEffect(() => {
     // console.log("effect");
     // console.log(activeFile);
     // TODO: 问题逐步缩小到了这里，在这个回调函数里是读不到activeFile这个变量的
-    // TODO:
+    // TODO: 好吧，最后还是用了useRef
     // in the preload function, the callback function can't read the variable of activeFile
     // why?
-    const currentFile = activeFile;
-    // console.log(currentFile);
-    const saveActiveFile = () => {
-      console.log(currentFile);
-      const { path, body } = currentFile;
-      fileDealer.writeFile(path, body).then(() => {
-        setUnSavedFiles(unSavedFiles.filter((id) => id !== currentFile.id));
-      });
-    };
-    const cb = (_e) => {
-      console.log(`cb: ${currentFile}`);
-      saveActiveFile();
-    };
 
-    window.myApp.listenIPC("save_edit_file", cb);
+    window.myApp.listenIPC("save_edit_file", saveContent);
     return () => {
-      window.myApp.removeListenIPC("save_edit_file", cb);
+      window.myApp.removeListenIPC("save_edit_file", saveContent);
     };
   });
 
@@ -271,7 +257,7 @@ function App() {
           fileRename={renameFile}
           fileDelete={deleteFile}
           fileCreate={createFile}
-          fileImport={saveContent}
+          fileImport={importFile}
         />
       </div>
       <div className="right-panel">
@@ -284,7 +270,7 @@ function App() {
         />
         {openedFiles.length > 0 && (
           <SimpleMDE
-            value={activeFile && activeFile.body}
+            value={activeFile.current && activeFile.current.body}
             onChange={(value) => {
               updateContent(activeFileID, value);
             }}
