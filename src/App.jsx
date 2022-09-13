@@ -33,7 +33,7 @@ function App() {
   const [files, setFiles] = useState(window.myApp.getFilesData() || {});
   //   opened files list
   //   data structure: [{id, title}, {id, title}]
-  const [openedFiles, setOpenedFiles] = useState([]);
+  //   const [openedFiles, setOpenedFiles] = useState([]);
   const [openedFilesID, setOpenedFilesID] = useState([]);
   //   unsaved files list
   //   data structure[id]
@@ -48,7 +48,9 @@ function App() {
   const filesArr = tranObjToArr(files);
   const activeFile = useRef(null);
   activeFile.current = files[activeFileID];
-  //   console.log(activeFile);
+  const openedFiles = openedFilesID.map((id) => {
+    return { id: id, title: files[id].title };
+  });
 
   //   by preload.js to use the app.getPath("documents")
   window.myApp.getPath("documents").then((res) => {
@@ -96,11 +98,6 @@ function App() {
     if (!openedFilesID.includes(fileID)) {
       const newOpenedFilesID = [...openedFilesID, fileID];
       setOpenedFilesID(newOpenedFilesID);
-      const newOpenedFiles = newOpenedFilesID.map((id) => {
-        const tempFile = files[id];
-        return { id: tempFile.id, title: tempFile.title };
-      });
-      setOpenedFiles(newOpenedFiles);
     }
   };
 
@@ -156,18 +153,9 @@ function App() {
     });
   };
 
-  const updateState = () => {
-    const newOpenedFiles = filesList.filter((item) =>
-      openedFilesID.includes(item.id)
-    );
-    setOpenedFiles(newOpenedFiles);
-  };
-
   //   close file
   const closeFile = (fileID) => {
-    const afterClose = openedFiles.filter((item) => item.id !== fileID);
     const afterCloseIDs = openedFilesID.filter((itemID) => itemID !== fileID);
-    setOpenedFiles(afterClose);
     setOpenedFilesID(afterCloseIDs);
     if (fileID === activeFileID) {
       if (afterCloseIDs.length > 0) {
@@ -226,11 +214,6 @@ function App() {
   useIpcRenderer({
     save_edit_file: saveContent,
   });
-
-  useEffect(() => {
-    updateState();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [files]);
 
   return (
     <div id="app">
