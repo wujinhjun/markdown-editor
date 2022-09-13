@@ -223,22 +223,8 @@ function App() {
 
   const filesList = searchedFiles.length > 0 ? searchedFiles : filesArr;
 
-  //   useIpcRenderer({
-  //     save_edit_file: saveContent,
-  //   });
-
-  useEffect(() => {
-    // console.log("effect");
-    // console.log(activeFile);
-    // TODO: 问题逐步缩小到了这里，在这个回调函数里是读不到activeFile这个变量的
-    // TODO: 好吧，最后还是用了useRef
-    // in the preload function, the callback function can't read the variable of activeFile
-    // why?
-
-    window.myApp.listenIPC("save_edit_file", saveContent);
-    return () => {
-      window.myApp.removeListenIPC("save_edit_file", saveContent);
-    };
+  useIpcRenderer({
+    save_edit_file: saveContent,
   });
 
   useEffect(() => {
@@ -261,21 +247,26 @@ function App() {
         />
       </div>
       <div className="right-panel">
-        <FileTable
-          openFileList={openedFiles}
-          unSavedFileList={unSavedFiles}
-          activeID={activeFileID}
-          fileClose={closeFile}
-          fileActive={fileActive}
-        />
         {openedFiles.length > 0 && (
-          <SimpleMDE
-            value={activeFile.current && activeFile.current.body}
-            onChange={(value) => {
-              updateContent(activeFileID, value);
-            }}
-            options={mdeOption}
-          />
+          <>
+            <FileTable
+              openFileList={openedFiles}
+              unSavedFileList={unSavedFiles}
+              activeID={activeFileID}
+              fileClose={closeFile}
+              fileActive={fileActive}
+            />
+            <SimpleMDE
+              value={activeFile.current && activeFile.current.body}
+              onChange={(value) => {
+                updateContent(activeFileID, value);
+              }}
+              options={mdeOption}
+            />
+          </>
+        )}
+        {!openedFiles.length > 0 && (
+          <div className="new-file-tips">打开或新建文档</div>
         )}
       </div>
     </div>
