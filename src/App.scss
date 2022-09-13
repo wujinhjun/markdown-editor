@@ -25,5 +25,13 @@ div {
 
     display: flex;
     flex-direction: column;
+
+    .new-file-tips {
+      margin-top: 72px;
+      display: flex;
+      justify-content: center;
+      font-size: 32px;
+      color: gray;
+    }
   }
 }
