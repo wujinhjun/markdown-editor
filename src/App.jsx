@@ -212,7 +212,13 @@ function App() {
   const filesList = searchedFiles.length > 0 ? searchedFiles : filesArr;
 
   useIpcRenderer({
-    save_edit_file: saveContent,
+    "create-new-file": createFile,
+    "save-edit-file": saveContent,
+    "search-file": () => {
+      console.log("search");
+    },
+    "import-file": importFile,
+    "close-file": () => closeFile(activeFileID),
   });
 
   return (
