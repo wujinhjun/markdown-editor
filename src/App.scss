@@ -7,6 +7,7 @@ div {
 #app {
   display: flex;
   flex-direction: row;
+  overflow: hidden;
 
   .left-panel {
     flex-grow: 0;
@@ -16,12 +17,14 @@ div {
 
     // max-width: 280px;
     width: 240px;
+    min-width: 240px;
     height: 100vh;
     background-color: base.$gray-tint-color-2;
   }
 
   .right-panel {
     flex-grow: 1;
+    width: calc(100% - 240px);
 
     display: flex;
     flex-direction: column;
