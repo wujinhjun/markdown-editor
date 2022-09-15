@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 
 import useKeypress from "../hooks/useKeypress";
+import useContextmenu from "../hooks/useContextmenu";
+import useIpcRenderer from "../hooks/useIpcRenderer";
 
 import "./FileList.scss";
 
@@ -9,6 +11,8 @@ import BottomButton from "./BottomButton";
 import mdIcon from "../static/markdown.svg";
 import addIcon from "../static/plus.svg";
 import importIcon from "../static/import.svg";
+
+import { getParentNode } from "../utils/Helpers";
 
 const FileList = (props) => {
   const {
@@ -62,6 +66,25 @@ const FileList = (props) => {
       node.current.focus();
     }
   }, [editStatus]);
+
+  const clickElement = useContextmenu(".list-wrapper", [filesList]);
+
+  useIpcRenderer({
+    "rename-file": () => {
+      const parentElement = getParentNode(
+        clickElement.current,
+        "title-wrapper"
+      );
+
+      if (parentElement) {
+        const { id, title } = parentElement.dataset;
+        // console.log(id, title);
+        setEditStatus(id);
+        setValue(title);
+      }
+    },
+  });
+
   return (
     <>
       <ul className="list-wrapper">
@@ -79,6 +102,8 @@ const FileList = (props) => {
                 onClick={() => {
                   fileClick(id);
                 }}
+                data-id={id}
+                data-title={title}
               >
                 <img
                   src={mdIcon}
