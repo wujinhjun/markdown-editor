@@ -70,6 +70,18 @@ const FileList = (props) => {
   const clickElement = useContextmenu(".list-wrapper", [filesList]);
 
   useIpcRenderer({
+    "open-file": () => {
+      const parentElement = getParentNode(
+        clickElement.current,
+        "title-wrapper"
+      );
+
+      if (parentElement) {
+        const { id } = parentElement.dataset;
+        // console.log(id, title);
+        fileClick(id);
+      }
+    },
     "rename-file": () => {
       const parentElement = getParentNode(
         clickElement.current,
@@ -81,6 +93,18 @@ const FileList = (props) => {
         // console.log(id, title);
         setEditStatus(id);
         setValue(title);
+      }
+    },
+
+    "delete-file": () => {
+      const parentElement = getParentNode(
+        clickElement.current,
+        "title-wrapper"
+      );
+
+      if (parentElement) {
+        const { id } = parentElement.dataset;
+        fileDelete(id);
       }
     },
   });
@@ -111,34 +135,7 @@ const FileList = (props) => {
                   className="markdown-icon"
                 />
                 {editStatus !== id && !item.isNew && (
-                  <>
-                    <span className="title">{title}</span>
-
-                    <div className="tempCon">
-                      <span
-                        className="temp"
-                        onClick={(e) => {
-                          //   console.log(e);
-                          e.preventDefault();
-                          e.stopPropagation();
-                          setEditStatus(id);
-                          setValue(title);
-                        }}
-                      >
-                        {"R"}
-                      </span>
-
-                      <span
-                        className="temp"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          fileDelete(id);
-                        }}
-                      >
-                        {"X"}
-                      </span>
-                    </div>
-                  </>
+                  <span className="title">{title}</span>
                 )}
                 {(editStatus === id || item.isNew) && (
                   <input
