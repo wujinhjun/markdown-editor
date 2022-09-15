@@ -169,6 +169,7 @@ function App() {
   const deleteFile = (fileID) => {
     const { [fileID]: value, ...afterDelete } = files;
     setFiles(afterDelete);
+    window.myApp.saveFilesData(afterDelete);
     if (openedFilesID.includes(fileID)) {
       closeFile(fileID);
     }
