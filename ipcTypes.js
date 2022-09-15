@@ -12,4 +12,6 @@ exports.CLOSE_FILE = "close-file";
 
 exports.OPEN_CONTEXT_MENU = "open-context-menu";
 
-exports.RENAME_FILE = "rename-file"
+exports.RENAME_FILE = "rename-file";
+exports.DELETE_FILE = "delete-file";
+exports.OPEN_FILE = "open-file";

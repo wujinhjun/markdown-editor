@@ -14,19 +14,23 @@ let mainWindow;
 const showContextMenu = (event) => {
     const template = [
         {
+            label: "打开",
+            click: () => {
+                mainWindow.webContents.send(ipcTypes.OPEN_FILE);
+            }
+        },
+        {
             label: "重命名",
             click: () => {
                 mainWindow.webContents.send(ipcTypes.RENAME_FILE);
             }
         },
-        { type: "separator" },
         {
             label: "删除",
             click: () => {
-
+                mainWindow.webContents.send(ipcTypes.DELETE_FILE);
             }
         },
-        { type: "separator" },
     ];
     const menu = Menu.buildFromTemplate(template);
     console.log("menu");
