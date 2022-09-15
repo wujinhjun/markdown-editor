@@ -8,6 +8,7 @@ const Store = require("electron-store");
 const filesStore = new Store({ name: "FilesData" });
 
 const ipcTypes = require("./ipcTypes")
+const AppWindow = require("./AppWindow/AppWindow");
 let template = require("./templates");
 let mainWindow;
 
@@ -38,21 +39,23 @@ const showContextMenu = (event) => {
 }
 
 const createWindow = () => {
-    // Create the browser window.
-    mainWindow = new BrowserWindow({
+
+    const mainWindowConfig = {
         width: 1200,
         height: 800,
         minWidth: 1076,
         minHeight: 680,
-        webPreferences: {
-            preload: path.join(__dirname, 'preload.js'),
-            nodeIntegration: true,
-        }
-    })
+    }
 
     // 加载 index.html
     const urlLocation = isDev ? "http://localhost:3000" : `file://${path.join(__dirname, './index.html')}`;
-    mainWindow.loadURL(urlLocation)
+    mainWindow = new AppWindow(mainWindowConfig, urlLocation);
+    mainWindow.loadURL(urlLocation);
+
+    mainWindow.on("closed", () => {
+        mainWindow = null;
+    })
+
     initialize();
     enable(mainWindow.webContents);
 
@@ -87,7 +90,16 @@ app.whenReady().then(() => {
         }
     })
 
+    // ipcMain.on(ipcTypes.OPEN_SETTING_WINDOW, () => {
+    //     const settingWindowConfig = {
+    //         width: 500,
+    //         height: 400,
+    //         parent: mainWindow
+    //     }
 
+    //     const settingsFileLocation = `file://${path.join(__dirname, "./settings")}`;
+
+    // })
 
     // ipc message
     // get path name
