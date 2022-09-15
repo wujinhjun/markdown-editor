@@ -32,8 +32,6 @@ function App() {
   // import the files and tran it from arr to obj
   const [files, setFiles] = useState(window.myApp.getFilesData() || {});
   //   opened files list
-  //   data structure: [{id, title}, {id, title}]
-  //   const [openedFiles, setOpenedFiles] = useState([]);
   const [openedFilesID, setOpenedFilesID] = useState([]);
   //   unsaved files list
   //   data structure[id]
@@ -144,13 +142,14 @@ function App() {
   };
 
   const saveContent = () => {
-    // console.log(activeFile.current);
-    const { path, body } = activeFile.current;
-    fileDealer.writeFile(path, body).then(() => {
-      setUnSavedFiles(
-        unSavedFiles.filter((id) => id !== activeFile.current.id)
-      );
-    });
+    if (activeFile.current) {
+      const { path, body } = activeFile.current;
+      fileDealer.writeFile(path, body).then(() => {
+        setUnSavedFiles(
+          unSavedFiles.filter((id) => id !== activeFile.current.id)
+        );
+      });
+    }
   };
 
   //   close file
