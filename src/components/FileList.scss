@@ -54,21 +54,6 @@
       flex-grow: 1;
       height: 20px;
     }
-    // test icon
-    .tempCon {
-      display: flex;
-      gap: 6px;
-      color: #fff;
-
-      .temp {
-        width: 24px;
-        aspect-ratio: 1;
-        line-height: 24px;
-        text-align: center;
-        background-color: bisque;
-        // height: 24px;
-      }
-    }
   }
 }
 .bottom-button-wrapper {
