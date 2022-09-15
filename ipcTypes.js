@@ -9,3 +9,7 @@ exports.SAVE_EDIT_FILE = "save-edit-file";
 exports.SEARCH_FILE = "search-file";
 exports.IMPORT_FILE = "import-file";
 exports.CLOSE_FILE = "close-file";
+
+exports.OPEN_CONTEXT_MENU = "open-context-menu";
+
+exports.RENAME_FILE = "rename-file"

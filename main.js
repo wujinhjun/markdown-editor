@@ -9,10 +9,33 @@ const filesStore = new Store({ name: "FilesData" });
 
 const ipcTypes = require("./ipcTypes")
 let template = require("./templates");
+let mainWindow;
+
+const showContextMenu = (event) => {
+    const template = [
+        {
+            label: "重命名",
+            click: () => {
+                mainWindow.webContents.send(ipcTypes.RENAME_FILE);
+            }
+        },
+        { type: "separator" },
+        {
+            label: "删除",
+            click: () => {
+
+            }
+        },
+        { type: "separator" },
+    ];
+    const menu = Menu.buildFromTemplate(template);
+    console.log("menu");
+    menu.popup(BrowserWindow.fromWebContents(event.sender));
+}
 
 const createWindow = () => {
     // Create the browser window.
-    const mainWindow = new BrowserWindow({
+    mainWindow = new BrowserWindow({
         width: 1200,
         height: 800,
         minWidth: 1076,
@@ -64,9 +87,9 @@ app.whenReady().then(() => {
 
     // ipc message
     // get path name
-    ipcMain.handle(ipcTypes.GET_PATH_NAME, async (e, title) => await app.getPath(title));
+    ipcMain.handle(ipcTypes.GET_PATH_NAME, async (_e, title) => await app.getPath(title));
 
-    ipcMain.handle(ipcTypes.OPEN_DIALOG, (e) => {
+    ipcMain.handle(ipcTypes.OPEN_DIALOG, (_e) => {
         return dialog.showOpenDialog({
             title: "选择导入的markdown",
             properties: ["openFile", "multiSelections"],
@@ -79,7 +102,7 @@ app.whenReady().then(() => {
         })
     });
 
-    ipcMain.handle(ipcTypes.IMPORT_MESSAGE, (e, num) => {
+    ipcMain.handle(ipcTypes.IMPORT_MESSAGE, (_e, num) => {
         return dialog.showMessageBox({
             type: "info",
             title: "文件导入成功",
@@ -87,9 +110,11 @@ app.whenReady().then(() => {
         })
     });
 
-    ipcMain.handle(ipcTypes.IMPORT_ERROR, (e) => {
+    ipcMain.handle(ipcTypes.IMPORT_ERROR, (_e) => {
         return dialog.showErrorBox("导入错误", "导入错误，请查看路径或已导入文件")
     })
+
+    ipcMain.handle(ipcTypes.OPEN_CONTEXT_MENU, (_e) => { return showContextMenu(_e) })
 
 })
 app.on('window-all-closed', () => {

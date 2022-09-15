@@ -62,4 +62,6 @@ contextBridge.exposeInMainWorld("myApp", {
     listenIPC: (key, cb) => ipcRenderer.on(key, cb),
     removeListenIPC: (key, cb) => ipcRenderer.removeListener(key, cb),
 
+    openContextDialog: () => ipcRenderer.invoke(ipcTypes.OPEN_CONTEXT_MENU),
+
 })
