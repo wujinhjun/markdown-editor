@@ -6,7 +6,6 @@ const useContextmenu = (targetElement, devList) => {
 
     useEffect(() => {
         const handleElement = (e) => {
-            console.log(targetElement);
             if (document.querySelector(targetElement).contains(e.target)) {
                 clickElement.current = e.target;
                 e.preventDefault();
