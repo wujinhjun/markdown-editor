@@ -42,6 +42,19 @@ let template = [
         ]
     },
     {
+        label: "软件设置",
+        submenu: [
+            {
+                label: "设置",
+                accelerator: "CmdOrCtrl+,",
+                click: (menuItem, browserWindow, event) => {
+                    browserWindow.send(ipcTypes.OPEN_SETTING_WINDOW);
+                }
+            },
+
+        ]
+    },
+    {
         label: "视图",
         submenu: [
             {
