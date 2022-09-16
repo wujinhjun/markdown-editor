@@ -3,14 +3,19 @@
   "version": "0.1.0",
   "private": true,
   "main": "main.js",
+  "author": {
+    "name": "wujinhjun",
+    "email": "wujinhjun@sjtu.edu.cn"
+  },
+  "description": "a markdown editor based on electron and open source component",
   "dependencies": {
-    "@electron/remote": "^2.0.8",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
     "babel": "^6.23.0",
     "bootstrap": "^5.2.1",
     "easymde": "^2.16.0",
+    "electron-is-dev": "^2.0.0",
     "electron-store": "^8.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -25,13 +30,61 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "hes": "nodemon --watch main.js template.js package.json preload.js --exec \"electron .\"",
-    "dev": "concurrently \"wait-on http://localhost:3000 && electron .\" \"cross-env BROWSER=none npm start\""
+    "dev": "NODE_ENV=development concurrently \"wait-on http://localhost:3000 && electron .\" \"cross-env BROWSER=none npm start\"",
+    "buildMain": "webpack",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
+    "prepack": "npm run build && npm run buildMain",
+    "predist": "npm run build && npm run buildMain",
+    "postinstall": "electron-builder install-app-deps"
   },
   "eslintConfig": {
     "extends": [
       "react-app",
       "react-app/jest"
     ]
+  },
+  "homepage": "./",
+  "build": {
+    "appId": "com.electron.mde",
+    "productName": "Wu-MDE",
+    "copyright": "Copyright © 2022 ${author}",
+    "files": [
+      "build/**/*",
+      "node_modules/**/*",
+      "package.json",
+      "preload.js",
+      "settings/**/*",
+      "AppWindow/**/*",
+      "ipcTypes.js",
+      "template.js"
+    ],
+    "directories": {
+      "buildResources": "assert"
+    },
+    "extraMetadata": {
+      "main": "./build/main.js"
+    },
+    "publish": [
+      "github"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
+      ],
+      "icon": "assert/icon.ico"
+    },
+    "nsis": {
+      "allowToChangeInstallationDirectory": true,
+      "oneClick": false
+    },
+    "extends": null
   },
   "browserslist": {
     "production": [
@@ -47,15 +100,17 @@
   },
   "devDependencies": {
     "@babel/runtime": "^7.19.0",
+    "@electron/remote": "^2.0.8",
     "babel-install": "2.1.0",
     "classnames": "^2.3.1",
     "concurrently": "^7.3.0",
     "cross-env": "^7.0.3",
     "electron": "^20.0.3",
+    "electron-builder": "^23.3.3",
     "electron-devtools-installer": "^3.2.0",
-    "electron-is-dev": "^2.0.0",
     "nodemon": "^2.0.19",
     "sass": "^1.54.8",
-    "wait-on": "^6.0.1"
+    "wait-on": "^6.0.1",
+    "webpack-cli": "^4.10.0"
   }
 }
