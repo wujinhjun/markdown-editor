@@ -6,6 +6,7 @@ const fs = require("node:fs/promises");
 const Store = require("electron-store");
 
 const filesStore = new Store({ name: "FilesData" })
+const settingStore = new Store({ name: "SettingConfig" })
 const ipcTypes = require("./ipcTypes");
 
 
@@ -59,9 +60,17 @@ contextBridge.exposeInMainWorld("myApp", {
 
     showErrorBox: () => ipcRenderer.invoke(ipcTypes.IMPORT_ERROR),
 
+    openSettingWindowIPC: () => ipcRenderer.send(ipcTypes.OPEN_SETTING_WINDOW),
     listenIPC: (key, cb) => ipcRenderer.on(key, cb),
     removeListenIPC: (key, cb) => ipcRenderer.removeListener(key, cb),
 
     openContextDialog: () => ipcRenderer.invoke(ipcTypes.OPEN_CONTEXT_MENU),
 
+
+    // self saved location
+    getSavedPath: () => settingStore.get("savedLocation"),
+
+    // setting window
+    openSettingDialog: () => ipcRenderer.invoke(ipcTypes.OPEN_LOCATION_DIALOG),
+    saveSettingPath: (path) => settingStore.set("savedLocation", path),
 })
