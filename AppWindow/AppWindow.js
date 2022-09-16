@@ -11,9 +11,8 @@ class AppWindow extends BrowserWindow {
                 preload: path.join(__dirname, 'preload.js')
             },
             show: false,
-            backgroundColor: "#efefef"
+            backgroundColor: "#fff"
         }
-
         const finalConfig = { ...basicConfig, ...config }
         super(finalConfig);
         this.loadURL(urlLocation);
