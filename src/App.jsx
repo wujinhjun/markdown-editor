@@ -55,6 +55,8 @@ function App() {
     savedLocation.current = res;
   });
 
+  const savedPath = window.myApp.getSavedPath() || savedLocation.current;
+
   //   search files
   const searchFiles = (keyWord) => {
     const newTempList = filesList.filter((item) =>
@@ -102,7 +104,7 @@ function App() {
   //   update
   const renameFile = (fileID, title, theNew) => {
     const newPath = theNew
-      ? window.myApp.joinPath(savedLocation.current, `${title}`)
+      ? window.myApp.joinPath(savedPath, `${title}`)
       : window.myApp.joinPath(
           window.myApp.dirPath(files[fileID].path),
           `${title}`
@@ -219,6 +221,7 @@ function App() {
     },
     "import-file": importFile,
     "close-file": () => closeFile(activeFileID),
+    "open-setting-window": window.myApp.openSettingWindowIPC,
   });
 
   return (
