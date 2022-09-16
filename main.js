@@ -5,12 +5,11 @@ const { default: installExtension, REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } = req
 const isDev = require('electron-is-dev');
 
 const Store = require("electron-store");
-const filesStore = new Store({ name: "FilesData" });
 
 const ipcTypes = require("./ipcTypes")
 const AppWindow = require("./AppWindow/AppWindow");
 let template = require("./templates");
-let mainWindow;
+let mainWindow, settingWindow;
 
 const showContextMenu = (event) => {
     const template = [
@@ -45,6 +44,10 @@ const createWindow = () => {
         height: 800,
         minWidth: 1076,
         minHeight: 680,
+        webPreferences: {
+            nodeIntegration: true,
+            preload: path.join(__dirname, 'preload.js')
+        },
     }
 
     // 加载 index.html
@@ -90,16 +93,32 @@ app.whenReady().then(() => {
         }
     })
 
-    // ipcMain.on(ipcTypes.OPEN_SETTING_WINDOW, () => {
-    //     const settingWindowConfig = {
-    //         width: 500,
-    //         height: 400,
-    //         parent: mainWindow
-    //     }
+    ipcMain.on(ipcTypes.OPEN_SETTING_WINDOW, () => {
+        const settingWindowConfig = {
+            width: 600,
+            height: 400,
+            parent: mainWindow,
+            webPreferences: {
+                nodeIntegration: true,
+                preload: path.join(__dirname, 'preload.js')
+            }
+        }
 
-    //     const settingsFileLocation = `file://${path.join(__dirname, "./settings")}`;
+        const settingsFileLocation = `file://${path.join(__dirname, "./settings/index.html")}`;
+        settingWindow = new AppWindow(settingWindowConfig, settingsFileLocation);
+        settingWindow.on("closed", () => {
+            settingWindow = null;
+        })
+        settingWindow.webContents.openDevTools()
+        enable(settingWindow.webContents)
+    })
 
-    // })
+    ipcMain.handle(ipcTypes.OPEN_LOCATION_DIALOG, () => {
+        return dialog.showOpenDialog({
+            properties: ["openDirectory"],
+            message: "选择文件的存储路径"
+        })
+    })
 
     // ipc message
     // get path name
