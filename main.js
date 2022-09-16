@@ -46,7 +46,8 @@ const createWindow = () => {
         minHeight: 680,
         webPreferences: {
             nodeIntegration: true,
-            preload: path.join(__dirname, 'preload.js')
+            preload: isDev ? path.join(__dirname, 'preload.js') : path.join(__dirname, "../preload.js")
+            // preload: path.join(__dirname, 'preload.js')
         },
     }
 
@@ -86,7 +87,7 @@ const options = {
 app.whenReady().then(() => {
     Store.initRenderer()
     createWindow()
-
+    console.log(isDev);
     app.on('activate', () => {
         if (BrowserWindow.getAllWindows().length === 0) {
             createWindow()
@@ -100,7 +101,8 @@ app.whenReady().then(() => {
             parent: mainWindow,
             webPreferences: {
                 nodeIntegration: true,
-                preload: path.join(__dirname, 'preload.js')
+                preload: isDev ? path.join(__dirname, 'preload.js') : path.join(__dirname, "../preload.js")
+                // preload: path.join(__dirname, 'preload.js')
             }
         }
 
