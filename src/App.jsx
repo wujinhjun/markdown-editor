@@ -1,5 +1,5 @@
 // import react api
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 
 // import components
 import SearchFile from "./components/SearchFile";
@@ -87,7 +87,7 @@ function App() {
   const openFile = (fileID) => {
     setActiveFileID(fileID);
     const currentFile = files[fileID];
-    const { id, title, path, isLoaded } = currentFile;
+    const { path, isLoaded } = currentFile;
     if (!isLoaded) {
       fileDealer.readFile(path).then((value) => {
         const newFile = { ...files[fileID], body: value, isLoaded: true };
