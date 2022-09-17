@@ -3,7 +3,7 @@ import search from "../static/search.svg";
 import { useState, useEffect, useRef } from "react";
 // import self hooks
 import useKeypress from "../hooks/useKeypress";
-
+import useIpcRenderer from "../hooks/useIpcRenderer";
 const SearchFile = (props) => {
   const { searchFiles } = props;
   const [isSearch, setIsSearch] = useState(false);
@@ -42,6 +42,11 @@ const SearchFile = (props) => {
       node.current.focus();
     }
   }, [isSearch]);
+
+  useIpcRenderer({
+    "search-file": openSearch,
+  });
+
   return (
     <div id="search-file">
       {!isSearch && (
