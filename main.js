@@ -8,7 +8,7 @@ const Store = require("electron-store");
 
 const ipcTypes = require("./ipcTypes")
 const AppWindow = require("./AppWindow/AppWindow");
-let template = require("./templates");
+let templateMenu = require("./templates");
 let mainWindow, settingWindow;
 
 const showContextMenu = (event) => {
@@ -33,7 +33,6 @@ const showContextMenu = (event) => {
         },
     ];
     const menu = Menu.buildFromTemplate(template);
-    console.log("menu");
     menu.popup(BrowserWindow.fromWebContents(event.sender));
 }
 
@@ -47,7 +46,6 @@ const createWindow = () => {
         webPreferences: {
             nodeIntegration: true,
             preload: isDev ? path.join(__dirname, 'preload.js') : path.join(__dirname, "../preload.js")
-            // preload: path.join(__dirname, 'preload.js')
         },
     }
 
@@ -64,10 +62,10 @@ const createWindow = () => {
     enable(mainWindow.webContents);
 
     // 打开开发工具
-    mainWindow.webContents.openDevTools()
-    installExtension([REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS], options)
-        .then((name) => console.log(`Added Extension: ${name}`))
-        .catch((err) => console.log('An error occurred: ', err));
+    // mainWindow.webContents.openDevTools()
+    // installExtension([REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS], options)
+    //     .then((name) => console.log(`Added Extension: ${name}`))
+    //     .catch((err) => console.log('An error occurred: ', err));
     // let menu = Menu.buildFromTemplate(template);
     // Menu.setApplicationMenu(menu);
 
@@ -76,7 +74,7 @@ const createWindow = () => {
 
     // 加载菜单
 
-    let menu = Menu.buildFromTemplate(template)
+    let menu = Menu.buildFromTemplate(templateMenu)
     Menu.setApplicationMenu(menu)
 }
 
@@ -87,7 +85,6 @@ const options = {
 app.whenReady().then(() => {
     Store.initRenderer()
     createWindow()
-    console.log(isDev);
     app.on('activate', () => {
         if (BrowserWindow.getAllWindows().length === 0) {
             createWindow()
@@ -102,7 +99,6 @@ app.whenReady().then(() => {
             webPreferences: {
                 nodeIntegration: true,
                 preload: isDev ? path.join(__dirname, 'preload.js') : path.join(__dirname, "../preload.js")
-                // preload: path.join(__dirname, 'preload.js')
             }
         }
 
