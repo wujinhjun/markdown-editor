@@ -9,6 +9,9 @@
 
   box-sizing: border-box;
   overflow: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
   .title-wrapper {
     flex-grow: 0;
