@@ -40,9 +40,10 @@ const createWindow = () => {
 
     const mainWindowConfig = {
         width: 1200,
-        height: 800,
+        height: 680,
         minWidth: 1076,
         minHeight: 680,
+        maxHeight: 680,
         webPreferences: {
             nodeIntegration: true,
             preload: isDev ? path.join(__dirname, 'preload.js') : path.join(__dirname, "../preload.js")
