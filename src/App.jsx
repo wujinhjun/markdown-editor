@@ -21,7 +21,7 @@ import fileDealer from "./utils/fileDealer";
 
 // mde options
 const mdeOption = {
-  minHeight: "495px",
+  minHeight: "450px",
   autofocus: true,
   //   lineNumbers: true,
   spellChecker: false,
@@ -169,9 +169,11 @@ function App() {
 
   //   deleteFile
   const deleteFile = (fileID) => {
+    const { path } = files[fileID];
     const { [fileID]: value, ...afterDelete } = files;
     setFiles(afterDelete);
     window.myApp.saveFilesData(afterDelete);
+    window.myApp.deleteFile(path);
     if (openedFilesID.includes(fileID)) {
       closeFile(fileID);
     }
@@ -216,9 +218,6 @@ function App() {
   useIpcRenderer({
     "create-new-file": createFile,
     "save-edit-file": saveContent,
-    "search-file": () => {
-      console.log("search");
-    },
     "import-file": importFile,
     "close-file": () => closeFile(activeFileID),
     "open-setting-window": window.myApp.openSettingWindowIPC,
