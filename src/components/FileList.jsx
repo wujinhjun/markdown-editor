@@ -78,7 +78,6 @@ const FileList = (props) => {
 
       if (parentElement) {
         const { id } = parentElement.dataset;
-        // console.log(id, title);
         fileClick(id);
       }
     },
@@ -90,7 +89,6 @@ const FileList = (props) => {
 
       if (parentElement) {
         const { id, title } = parentElement.dataset;
-        // console.log(id, title);
         setEditStatus(id);
         setValue(title);
       }

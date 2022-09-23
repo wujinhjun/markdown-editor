@@ -62,7 +62,6 @@ function App() {
     const newTempList = filesList.filter((item) =>
       item.title.includes(keyWord)
     );
-    console.log(newTempList);
     setSearchFiles(newTempList);
   };
 
@@ -116,7 +115,6 @@ function App() {
       path: newPath,
     };
     const newFiles = { ...files, [fileID]: modifiedFile };
-    // console.log(theNew);
     if (theNew) {
       fileDealer.writeFile(newPath, files[fileID].body).then(() => {
         setFiles(newFiles);
@@ -127,7 +125,6 @@ function App() {
       fileDealer.renameFile(oldPath, newPath).then(() => {
         setFiles(newFiles);
         window.myApp.saveFilesData(newFiles);
-        // console.log(a);
       });
     }
   };
@@ -209,9 +206,7 @@ function App() {
   };
 
   const importFile = () => {
-    // console.log("import");
     window.myApp.showImportDialog().then((res) => {
-      //   console.log(res.filePaths);
       const filePaths = res.filePaths;
       if (Array.isArray(filePaths)) {
         const filteredPaths = filePaths.filter((path) => {

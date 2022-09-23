@@ -7,10 +7,8 @@ const scrollOptions = {
   scrollX: true,
 };
 const FileTable = (props) => {
-  // props:{[{id, saved}], activeID}
   const { openFileList, unSavedFileList, activeID, fileClose, fileActive } =
     props;
-  //   console.log(openFileList);
   return (
     <ul className="file-tables">
       {openFileList &&

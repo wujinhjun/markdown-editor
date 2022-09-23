@@ -1,7 +1,6 @@
 const { app, BrowserWindow, ipcMain, dialog, Menu } = require('electron')
 const { initialize, enable } = require("@electron/remote/main");
 const path = require('path')
-const { default: installExtension, REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } = require('electron-devtools-installer');
 const isDev = require('electron-is-dev');
 
 const Store = require("electron-store");
@@ -61,26 +60,10 @@ const createWindow = () => {
 
     initialize();
     enable(mainWindow.webContents);
-
-    // 打开开发工具
-    // mainWindow.webContents.openDevTools()
-    // installExtension([REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS], options)
-    //     .then((name) => console.log(`Added Extension: ${name}`))
-    //     .catch((err) => console.log('An error occurred: ', err));
-    // let menu = Menu.buildFromTemplate(template);
-    // Menu.setApplicationMenu(menu);
-
-    // conceal menu
-    // // mainWindow.removeMenu();
-
     // 加载菜单
 
     let menu = Menu.buildFromTemplate(templateMenu)
     Menu.setApplicationMenu(menu)
-}
-
-const options = {
-    loadExtensionOptions: { allowFileAccess: true },
 }
 
 app.whenReady().then(() => {
@@ -160,6 +143,7 @@ app.whenReady().then(() => {
     })
 
 })
+
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') app.quit()
 })

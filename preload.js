@@ -1,5 +1,3 @@
-// import { tranObjToArr } from "./src/utils/Helpers";
-
 const { contextBridge, ipcRenderer } = require("electron");
 const { join, dirname, basename, extname } = require("path");
 const fs = require("node:fs/promises");
