@@ -23,3 +23,6 @@ exports.OPEN_FILE = "open-file";
 exports.OPEN_SETTING_WINDOW = "open-setting-window";
 exports.OPEN_LOCATION_DIALOG = "open-location-dialog";
 exports.SAVE_LOCATION_PATH = "save-location-path";
+
+// more details
+exports.SAVE_EDIT_FILE = "save-edit-file";

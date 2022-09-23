@@ -150,6 +150,15 @@ app.whenReady().then(() => {
 
     ipcMain.handle(ipcTypes.OPEN_CONTEXT_MENU, (_e) => { return showContextMenu(_e) })
 
+    ipcMain.handle(ipcTypes.SAVE_EDIT_FILE, (_e) => {
+        return dialog.showMessageBox({
+            type: "question",
+            buttons: ["取消", "确定"],
+            title: "文件修改未保存",
+            message: "是否要保存正在关闭文件的修改"
+        })
+    })
+
 })
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') app.quit()

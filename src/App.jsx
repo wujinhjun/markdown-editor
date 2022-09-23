@@ -145,11 +145,13 @@ function App() {
 
   const saveContent = () => {
     if (activeFile.current) {
-      const { path, body } = activeFile.current;
+      const { id, path, body } = activeFile.current;
       fileDealer.writeFile(path, body).then(() => {
-        setUnSavedFiles(
-          unSavedFiles.filter((id) => id !== activeFile.current.id)
-        );
+        if (!unSavedFiles.filter((fileID) => fileID !== id)) {
+          setUnSavedFiles(unSavedFiles.filter((fileID) => fileID !== id));
+        } else {
+          setUnSavedFiles([]);
+        }
       });
     }
   };
@@ -158,11 +160,38 @@ function App() {
   const closeFile = (fileID) => {
     const afterCloseIDs = openedFilesID.filter((itemID) => itemID !== fileID);
     setOpenedFilesID(afterCloseIDs);
-    if (fileID === activeFileID) {
-      if (afterCloseIDs.length > 0) {
-        setActiveFileID(afterCloseIDs[0]);
-      } else {
-        setActiveFileID("");
+
+    if (unSavedFiles.includes(fileID)) {
+      window.myApp.showSaveBox().then((res) => {
+        if (res.response === 1) {
+          saveContent();
+          if (fileID === activeFileID) {
+            if (afterCloseIDs.length > 0) {
+              setActiveFileID(afterCloseIDs[0]);
+            } else {
+              setActiveFileID("");
+            }
+          }
+        } else if (res.response === 0) {
+          setUnSavedFiles(
+            unSavedFiles.filter((id) => id !== activeFile.current.id)
+          );
+          if (fileID === activeFileID) {
+            if (afterCloseIDs.length > 0) {
+              setActiveFileID(afterCloseIDs[0]);
+            } else {
+              setActiveFileID("");
+            }
+          }
+        }
+      });
+    } else {
+      if (fileID === activeFileID) {
+        if (afterCloseIDs.length > 0) {
+          setActiveFileID(afterCloseIDs[0]);
+        } else {
+          setActiveFileID("");
+        }
       }
     }
   };

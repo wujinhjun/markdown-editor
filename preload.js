@@ -73,4 +73,7 @@ contextBridge.exposeInMainWorld("myApp", {
     // setting window
     openSettingDialog: () => ipcRenderer.invoke(ipcTypes.OPEN_LOCATION_DIALOG),
     saveSettingPath: (path) => settingStore.set("savedLocation", path),
+
+    // more details
+    showSaveBox: () => ipcRenderer.invoke(ipcTypes.SAVE_EDIT_FILE),
 })
