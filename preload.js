@@ -1,5 +1,3 @@
-// import { tranObjToArr } from "./src/utils/Helpers";
-
 const { contextBridge, ipcRenderer } = require("electron");
 const { join, dirname, basename, extname } = require("path");
 const fs = require("node:fs/promises");
@@ -8,8 +6,6 @@ const Store = require("electron-store");
 const filesStore = new Store({ name: "FilesData" })
 const settingStore = new Store({ name: "SettingConfig" })
 const ipcTypes = require("./ipcTypes");
-
-
 
 const tranObjToArr = objList => Object.keys(objList).map((item) => (objList[item]))
 
@@ -65,7 +61,6 @@ contextBridge.exposeInMainWorld("myApp", {
     removeListenIPC: (key, cb) => ipcRenderer.removeListener(key, cb),
 
     openContextDialog: () => ipcRenderer.invoke(ipcTypes.OPEN_CONTEXT_MENU),
-
 
     // self saved location
     getSavedPath: () => settingStore.get("savedLocation"),
