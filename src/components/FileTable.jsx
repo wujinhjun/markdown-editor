@@ -1,16 +1,9 @@
 import classNames from "classnames";
 import "./FileTable.scss";
 
-const scrollOptions = {
-  mouseWheel: true,
-  scrollbars: true,
-  scrollX: true,
-};
 const FileTable = (props) => {
-  // props:{[{id, saved}], activeID}
   const { openFileList, unSavedFileList, activeID, fileClose, fileActive } =
     props;
-  //   console.log(openFileList);
   return (
     <ul className="file-tables">
       {openFileList &&

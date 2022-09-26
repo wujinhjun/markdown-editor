@@ -16,6 +16,7 @@ $text-white-color: #fff;
 $background-color: #fff;
 
 $font-stack: "Segoe UI", "Microsoft Yahei";
+
 @mixin CN-header {
   font-family: $font-stack;
   font-size: 24px;

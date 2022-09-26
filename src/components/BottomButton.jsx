@@ -1,6 +1,5 @@
 import "./BottomButton.scss";
 
-// props: {icon, title="按钮"}
 const BottomButton = (props) => {
   const { icon, title = "按钮", color, operateFunc } = props;
   return (
