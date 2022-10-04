@@ -89,6 +89,14 @@ let template = [
                     browserWindow.send(ipcTypes.OPEN_SETTING_WINDOW);
                 }
             },
+            {
+                label: '刷新',
+                accelerator: 'CmdOrCtrl+R',
+                click: (item, focusedWindow) => {
+                    if (focusedWindow)
+                        focusedWindow.reload();
+                }
+            },
 
         ]
     },
