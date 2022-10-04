@@ -103,6 +103,11 @@ function App() {
 
   //   update
   const renameFile = (fileID, title, theNew) => {
+    const temp = filesArr.filter((item) => item.title === title);
+    if (temp.length !== 0 && fileID !== temp?.id) {
+      window.myApp.showRenameErrorBox();
+      return false;
+    }
     const newPath = theNew
       ? window.myApp.joinPath(savedPath, `${title}`)
       : window.myApp.joinPath(
@@ -116,7 +121,6 @@ function App() {
       path: newPath,
     };
     const newFiles = { ...files, [fileID]: modifiedFile };
-    // console.log(theNew);
     if (theNew) {
       fileDealer.writeFile(newPath, files[fileID].body).then(() => {
         setFiles(newFiles);
@@ -127,9 +131,10 @@ function App() {
       fileDealer.renameFile(oldPath, newPath).then(() => {
         setFiles(newFiles);
         window.myApp.saveFilesData(newFiles);
-        // console.log(a);
       });
     }
+
+    return true;
   };
 
   //   update
@@ -209,9 +214,7 @@ function App() {
   };
 
   const importFile = () => {
-    // console.log("import");
     window.myApp.showImportDialog().then((res) => {
-      //   console.log(res.filePaths);
       const filePaths = res.filePaths;
       if (Array.isArray(filePaths)) {
         const filteredPaths = filePaths.filter((path) => {

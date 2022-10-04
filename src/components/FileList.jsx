@@ -29,8 +29,8 @@ const FileList = (props) => {
   const [value, setValue] = useState("");
   const node = useRef(null);
   //   listen key press
-  const enterPress = useKeypress(13);
-  const escPress = useKeypress(27);
+  const enterPress = useKeypress("Enter");
+  const escPress = useKeypress("Escape");
 
   const closeInput = (item) => {
     setEditStatus(false);
@@ -43,9 +43,11 @@ const FileList = (props) => {
   useEffect(() => {
     const editItem = filesList.find((item) => item.id === editStatus);
     if (enterPress && editStatus && value.trim() !== "") {
-      fileRename(editItem.id, value, editItem.isNew);
-      setValue("");
-      setEditStatus(false);
+      const res = fileRename(editItem.id, value, editItem.isNew);
+      if (res) {
+        setValue("");
+        setEditStatus(false);
+      }
     }
 
     if (escPress && editStatus) {
@@ -90,7 +92,6 @@ const FileList = (props) => {
 
       if (parentElement) {
         const { id, title } = parentElement.dataset;
-        // console.log(id, title);
         setEditStatus(id);
         setValue(title);
       }
