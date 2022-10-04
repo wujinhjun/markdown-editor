@@ -71,4 +71,5 @@ contextBridge.exposeInMainWorld("myApp", {
 
     // more details
     showSaveBox: () => ipcRenderer.invoke(ipcTypes.SAVE_EDIT_FILE),
+    showRenameErrorBox: () => ipcRenderer.invoke(ipcTypes.RENAME_ERROR),
 })

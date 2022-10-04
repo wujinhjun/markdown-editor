@@ -159,6 +159,10 @@ app.whenReady().then(() => {
         })
     })
 
+    ipcMain.handle(ipcTypes.RENAME_ERROR, (_e) => {
+        return dialog.showErrorBox("重命名错误", "重命名错误，已有同名的文件存在。在确定后再按一次Enter键重新命名")
+    })
+
 })
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') app.quit()
