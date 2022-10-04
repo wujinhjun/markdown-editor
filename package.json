@@ -29,7 +29,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "hes": "nodemon --watch main.js template.js package.json preload.js --exec \"electron .\"",
+    "hes": "nodemon --watch main.js --watch templates.js --watch package.json --watch preload.js --exec \"electron .\"",
     "dev": "concurrently \"wait-on http://localhost:3000 && electron .\" \"cross-env BROWSER=none npm start\"",
     "buildMain": "webpack",
     "pack": "electron-builder --dir",
