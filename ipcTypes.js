@@ -26,3 +26,4 @@ exports.SAVE_LOCATION_PATH = "save-location-path";
 
 // more details
 exports.SAVE_EDIT_FILE = "save-edit-file";
+exports.RENAME_ERROR = "rename-error";
