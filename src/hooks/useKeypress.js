@@ -1,16 +1,17 @@
 import { useState, useEffect } from "react";
 
-const useKeypress = (targetKeyCode) => {
+const useKeypress = (targetKey) => {
     const [keyPressed, setKeyPressed] = useState(false);
 
-    const keyDownHandler = ({ keyCode }) => {
-        if (keyCode === targetKeyCode) {
+    const keyDownHandler = ({ key }) => {
+        if (key === targetKey) {
             setKeyPressed(true);
         }
     };
 
-    const keyUpHandler = ({ keyCode }) => {
-        if (keyCode === targetKeyCode) {
+    const keyUpHandler = ({ key }) => {
+
+        if (key === targetKey) {
             setKeyPressed(false);
         }
     }
@@ -18,12 +19,16 @@ const useKeypress = (targetKeyCode) => {
     useEffect(() => {
         document.addEventListener('keydown', keyDownHandler);
         document.addEventListener('keyup', keyUpHandler);
+        console.log("add");
 
         return () => {
+            console.log("remove");
             document.removeEventListener('keydown', keyDownHandler);
             document.removeEventListener('keyup', keyUpHandler);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+
     return keyPressed;
 }
 
