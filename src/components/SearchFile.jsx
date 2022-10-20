@@ -1,4 +1,4 @@
-import "./SearchFile.scss";
+import "../style/SearchFile.scss";
 import search from "../static/search.svg";
 import { useState, useEffect, useRef } from "react";
 

@@ -1,4 +1,4 @@
-import "./BottomButton.scss";
+import "../style/BottomButton.scss";
 
 const BottomButton = (props) => {
   const { icon, title = "按钮", color, operateFunc } = props;

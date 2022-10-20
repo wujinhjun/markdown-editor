@@ -4,7 +4,7 @@ import useKeypress from "../hooks/useKeypress";
 import useContextmenu from "../hooks/useContextmenu";
 import useIpcRenderer from "../hooks/useIpcRenderer";
 
-import "./FileList.scss";
+import "../style/FileList.scss";
 
 import BottomButton from "./BottomButton";
 

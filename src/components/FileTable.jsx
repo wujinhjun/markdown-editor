@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import "./FileTable.scss";
+import "../style/FileTable.scss";
 
 const FileTable = (props) => {
   const { openFileList, unSavedFileList, activeID, fileClose, fileActive } =
