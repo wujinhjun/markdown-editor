@@ -41,6 +41,11 @@ You can use the toolbar on the top, which can preview the markdown and change th
 
 ***
 
+## Some Broken Thoughts
+
+It's a pity that I haven't the MacOS, So my releases only have the edition of windows.
+After this time, I will borrow a mac from my friends to packaging the software on macOS.
+
 ## At the end
 
 *I must say, the typescript is more powerful than the javascript. When I start this project, However, I can't handle typescript. So, I have to use javascript to finish this project.*
