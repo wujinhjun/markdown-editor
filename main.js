@@ -103,12 +103,12 @@ app.whenReady().then(() => {
             }
         }
 
-        const settingsFileLocation = `file://${path.join(__dirname, "./settings/index.html")}`;
+        const settingsFileLocation = isDev ? `file://${path.join(__dirname, "./settings/index.html")}` : `file://${path.join(__dirname, "./settings/index.html")}`;
         settingWindow = new AppWindow(settingWindowConfig, settingsFileLocation);
         settingWindow.on("closed", () => {
             settingWindow = null;
         })
-        settingWindow.webContents.openDevTools()
+        // settingWindow.webContents.openDevTools()
         enable(settingWindow.webContents)
     })
 
